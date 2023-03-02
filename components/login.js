@@ -3,18 +3,16 @@ import { Text, TextInput, View, Button, Alert, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
 
-export default class loginApp extends Component {
+export default class LoginApp extends Component {
   constructor(props){
     super(props);
-    this.state = {email: "", password: "", error: ""}; //ADD SUBMITTED CHECK? FREEZE SCREEN THINGY
+    this.state = {email: "", password: "", error: "", submitted: false};
     this.login = this.login.bind(this);
   }
 
-  // componentDidMount(){
-    
-  // }
-
   login(){
+    this.setState({submitted: true});
+
     if (!(this.state.email && this.state.password)){
       this.setState({error:"Please enter an email and a password."})
       return;
@@ -31,8 +29,30 @@ export default class loginApp extends Component {
     }
     console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
     console.log("Login successful")
-  }
+
+    // return fetch('[INSERT LINK]',
+    // {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     email: this.state.email,
+    //     password: this.state.password,
+    //   })
+    // })
+    // .then((response) => {
+    //   console.log(this.state.email + " : " + this.state.password);
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+    // });
+  }   
   
+  componentDidMount(){
+    const reset = this.props.navigation.addListener('focus', () => {
+      this.setState({email: "", password: "", error: "", submitted: false});
+    });
+    return reset;
+  }
 
   render() {
     return (

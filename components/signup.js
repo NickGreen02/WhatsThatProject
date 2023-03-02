@@ -3,14 +3,16 @@ import { Text, TextInput, View, Button, Alert, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
 
-export default class signupApp extends Component {
+export default class SignupApp extends Component {
     constructor(props){
       super(props);
-      this.state = {firstname: "", surname: "", email: "", password: "", error: ""};
+      this.state = {firstname: "", surname: "", email: "", password: "", error: "", submitted: false};
       this.signup = this.signup.bind(this);
     }
 
     signup(){
+        this.setState({submitted: true});
+
         if (!(this.state.email && this.state.password)){
           this.setState({error:"Please enter an email and a password."})
           return;
@@ -27,7 +29,31 @@ export default class signupApp extends Component {
         }
         console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
         console.log("Signup successful")
+        // return fetch('[INSERT LINK]',
+        // {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({
+        //     firstname: this.state.firstname, //SEE API DOCS FOR FORMAT
+        //     surname: this.state.surname,
+        //     email: this.state.email,
+        //     password: this.state.password,
+        //   })
+        // })
+        // .then((response) => {
+        //   console.log(this.state.firstname + " " + this.state.password + "\n" + this.state.email + " : " + this.state.password);
+        // })
+        // .catch((error) => {
+        //   console.error(error);
+        // });
       }
+    
+    componentDidMount(){
+      const reset = this.props.navigation.addListener('focus', () => {
+        this.setState({firstname: "", surname: "", email: "", password: "", error: "", submitted: false});
+      });
+      return reset;
+    }
 
     render(){
         return(
