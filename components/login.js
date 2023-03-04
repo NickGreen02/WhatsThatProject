@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { Text, TextInput, View, Button, Alert, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
 
@@ -10,9 +10,11 @@ export default class LoginApp extends Component {
     this.login = this.login.bind(this);
   }
 
+  //login function
   login(){
     this.setState({submitted: true});
 
+    //validation for user data
     if (!(this.state.email && this.state.password)){
       this.setState({error:"Please enter an email and a password."})
       return;
@@ -27,9 +29,8 @@ export default class LoginApp extends Component {
         this.setState({error: "Password isn't strong enough (One upper, one lower, one special, one number, at least 8 characters long)"})
         return;
     }
-    //console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
-    //console.log("Login successful")
 
+    //contact the API
     return fetch('http://localhost:3333/api/1.0.0/login',
     {
       method: 'POST',
@@ -54,6 +55,7 @@ export default class LoginApp extends Component {
     return reset;
   }
 
+  //render the page
   render() {
     return (
       <View style={styles.container}>
@@ -101,6 +103,7 @@ export default class LoginApp extends Component {
 
 }
 
+//stylesheet for the page
 const styles = StyleSheet.create({
   container:{
     flex: 1,
@@ -130,6 +133,6 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     justifyContent: 'center',
-    padding: 10,
+    paddingTop: 10,
   }
 })

@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { Text, TextInput, View, Button, Alert, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { Text, TextInput, View,StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
 
@@ -10,9 +10,11 @@ export default class SignupApp extends Component {
       this.signup = this.signup.bind(this);
     }
 
+    //signup function
     signup(){
         this.setState({submitted: true});
 
+        //validation for user data
         if (!(this.state.email && this.state.password)){
           this.setState({error:"Please enter an email and a password."})
           return;
@@ -27,14 +29,14 @@ export default class SignupApp extends Component {
             this.setState({error: "Password isn't strong enough (One upper, one lower, one special, one number, at least 8 characters long)"})
             return;
         }
-        // console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
-        // console.log("Signup successful")
+        
+        //contact the API
         return fetch('http://localhost:3333/api/1.0.0/user',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            first_name: this.state.firstname, //SEE API DOCS FOR FORMAT
+            first_name: this.state.firstname,
             last_name: this.state.surname,
             email: this.state.email,
             password: this.state.password,
@@ -55,6 +57,7 @@ export default class SignupApp extends Component {
       return reset;
     }
 
+    //render the page
     render(){
         return(
             <View style={styles.container}>
@@ -107,6 +110,7 @@ export default class SignupApp extends Component {
     }
 }
 
+//stylesheet for the page
 const styles = StyleSheet.create({
     container:{
       flex: 1,

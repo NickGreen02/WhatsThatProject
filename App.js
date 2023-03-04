@@ -8,6 +8,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    //add a navigation container containing all screens
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Login" component={LoginScreen}/>
