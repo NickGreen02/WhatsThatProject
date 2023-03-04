@@ -27,25 +27,25 @@ export default class SignupApp extends Component {
             this.setState({error: "Password isn't strong enough (One upper, one lower, one special, one number, at least 8 characters long)"})
             return;
         }
-        console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
-        console.log("Signup successful")
-        // return fetch('[INSERT LINK]',
-        // {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({
-        //     firstname: this.state.firstname, //SEE API DOCS FOR FORMAT
-        //     surname: this.state.surname,
-        //     email: this.state.email,
-        //     password: this.state.password,
-        //   })
-        // })
-        // .then((response) => {
-        //   console.log(this.state.firstname + " " + this.state.password + "\n" + this.state.email + " : " + this.state.password);
-        // })
-        // .catch((error) => {
-        //   console.error(error);
-        // });
+        // console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
+        // console.log("Signup successful")
+        return fetch('http://localhost:3333/api/1.0.0/user',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            first_name: this.state.firstname, //SEE API DOCS FOR FORMAT
+            last_name: this.state.surname,
+            email: this.state.email,
+            password: this.state.password,
+          })
+        })
+        .then((response) => {
+          console.log(this.state.firstname + " " + this.state.password + "\n" + this.state.email + " : " + this.state.password);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       }
     
     componentDidMount(){

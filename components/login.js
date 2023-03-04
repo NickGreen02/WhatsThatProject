@@ -27,24 +27,24 @@ export default class LoginApp extends Component {
         this.setState({error: "Password isn't strong enough (One upper, one lower, one special, one number, at least 8 characters long)"})
         return;
     }
-    console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
-    console.log("Login successful")
+    //console.log("Email: " + this.state.email + "\nPassword: " + this.state.password)
+    //console.log("Login successful")
 
-    // return fetch('[INSERT LINK]',
-    // {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     email: this.state.email,
-    //     password: this.state.password,
-    //   })
-    // })
-    // .then((response) => {
-    //   console.log(this.state.email + " : " + this.state.password);
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
+    return fetch('http://localhost:3333/api/1.0.0/login',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password,
+      })
+    })
+    .then((response) => {
+      console.log(this.state.email + " : " + this.state.password);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }   
   
   componentDidMount(){
