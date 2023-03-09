@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LoginApp extends Component {
   constructor(props){
@@ -26,7 +27,7 @@ export default class LoginApp extends Component {
 
     const PASSWORD_REGEX = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     if(!PASSWORD_REGEX.test(this.state.password)){
-        this.setState({error: "Password isn't strong enough (One upper, one lower, one special, one number, at least 8 characters long)"})
+        this.setState({error: "Invalid passwordgrlkwngwrgnwrgnhwroghwrwuwru."})
         return;
     }
 
@@ -41,7 +42,29 @@ export default class LoginApp extends Component {
       })
     })
     .then((response) => {
-      console.log(this.state.email + " : " + this.state.password);
+      if (response.status === 200){
+        return response.json();
+      }
+      else if (response.status === 400){
+        throw "Invalid email or password supplied"
+      }
+      else{
+        throw "Something went wrong"
+      }
+    })
+    .then(async (rJson) => {
+      console.log(rJson)
+      try{
+        await AsyncStorage.setItem("whatsthat_user_id", rJson.id)
+        await AsyncStorage.setItem("whatsthat_session_token", rJson.token)
+
+        this.setState({submitted: true})
+
+        this.props.navigation.navigate("MainAppNav")
+      }
+      catch{
+        throw "Something went wrong"
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -112,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   formContainer: {
-    
+    width: "70vw"
   },
   email: {
     margin:10,

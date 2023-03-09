@@ -43,10 +43,25 @@ export default class SignupApp extends Component {
           })
         })
         .then((response) => {
-          console.log(this.state.firstname + " " + this.state.password + "\n" + this.state.email + " : " + this.state.password);
+          if (response.status === 201){
+            return response.json();
+          }
+          else if (response.status === 400){
+            throw "Email already exists or password isn't strong enough."
+          }
+          else{
+            throw "Something went wrong"
+          }
+        })
+        .then((rJson) => {
+          console.log(rJson)
+          this.setState({"error": "User added successfully"})
+          this.setState({"submitted": false})
+          this.props.navigation.navigate("Login")
         })
         .catch((error) => {
-          console.error(error);
+          this.setState({"error": error})
+          this.setState({"submitted": false})
         });
       }
     
