@@ -5,10 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ChatPreview from './chatPreview';
 
+
 export default class ChatlistApp extends Component {
     constructor(props){
         super(props);
-        this.state = {chats: {}};
+        this.state = {chats: {}, token: "f0843ddb9c2627f5a6da39d8ac73b119"};
     }
 
     componentDidMount(){
@@ -16,10 +17,26 @@ export default class ChatlistApp extends Component {
         this.checkLoggedIn();
       })
 
+      this.getData()
+      console.log("Data displayed")
+    }
+
+    componentWillUnmount(){
+      this.unsubscribe();
+    }
+
+    checkLoggedIn = async () => {
+      const value = await AsyncStorage.getItem('whatsthat_session_token')
+      if(value == null){
+        this.props.navigation.navigate('Login')
+      }
+    }
+
+    getData(){
       return fetch('http://localhost:3333/api/1.0.0/chat',
       {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Authorization': this.state.token}
       })
       .then((response) => {
         if (response.status === 200){
@@ -38,18 +55,10 @@ export default class ChatlistApp extends Component {
       .then((rJson) => {
         console.log(rJson)
         this.setState({chats: rJson})
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    }
-
-    componentWillUnmount(){
-      this.unsubscribe();
-    }
-
-    checkLoggedIn = async () => {
-      const value = await AsyncStorage.getItem('whatsthat_session_token')
-      if(value == null){
-        this.props.navigation.navigate('Login')
-      }
     }
 
     render(){

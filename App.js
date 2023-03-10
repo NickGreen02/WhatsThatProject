@@ -11,7 +11,7 @@ export default function App() {
   return (
     //add a navigation container containing all screens
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
+      <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Signup" component={SignupScreen}/>
         <Stack.Screen name="MainAppNav" component={ChatlistScreen}/>  
