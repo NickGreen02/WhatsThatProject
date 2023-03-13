@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class LoginApp extends Component {
   constructor(props){
     super(props);
-    this.state = {email: "", password: "", error: "", submitted: false};
+    this.state = {email: "nick.green@mmu.ac.uk", password: "Wr3xh4m!", error: "", submitted: false};
     this.login = this.login.bind(this);
   }
 
@@ -72,10 +72,10 @@ export default class LoginApp extends Component {
   }   
   
   componentDidMount(){
-    const reset = this.props.navigation.addListener('focus', () => {
-      this.setState({email: "", password: "", error: "", submitted: false});
-    });
-    return reset;
+    // const reset = this.props.navigation.addListener('focus', () => {
+    //   this.setState({email: "", password: "", error: "", submitted: false});
+    // });
+    // return reset;
   }
 
   //render the page
@@ -87,6 +87,7 @@ export default class LoginApp extends Component {
             <TextInput 
             placeholder='Enter email'
             onChangeText={value=>{this.setState({email:value})}}
+            value={this.state.email}
             />
           </View>
 
@@ -95,11 +96,12 @@ export default class LoginApp extends Component {
             placeholder='Enter password'
             secureTextEntry={true}
             onChangeText={value=>{this.setState({password:value})}}
+            value={this.state.password}
             />
           </View>
 
           <View>
-            <TouchableOpacity onPress={this.login}>
+            <TouchableOpacity onPress={() => this.login()}>
                 <View style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
                 </View>

@@ -9,7 +9,7 @@ import ChatPreview from './chatPreview';
 export default class ChatlistApp extends Component {
     constructor(props){
         super(props);
-        this.state = {chats: {}, token: "f0843ddb9c2627f5a6da39d8ac73b119"};
+        this.state = {chats: {}};
     }
 
     componentDidMount(){
@@ -32,11 +32,11 @@ export default class ChatlistApp extends Component {
       }
     }
 
-    getData(){
+    async getData(){
       return fetch('http://localhost:3333/api/1.0.0/chat',
       {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'X-Authorization': this.state.token}
+        headers: { 'Content-Type': 'application/json', 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token')}
       })
       .then((response) => {
         if (response.status === 200){
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     container:{
       flex: 1,
       width: "100%",
-      alignItems:"center",
-      justifyContent:"center"
+      alignItems:"flex-start",
+      justifyContent:"flex-start"
     },
     formContainer: {
       
