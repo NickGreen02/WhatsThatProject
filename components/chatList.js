@@ -16,13 +16,15 @@ export default class ChatlistApp extends Component {
       this.unsubscribe = this.props.navigation.addListener('focus', () => {
         this.checkLoggedIn();
       })
-
-      this.getData()
+      this.refreshChats = this.props.navigation.addListener('focus', () =>{
+        this.getData();
+      })
       console.log("Data displayed")
     }
 
     componentWillUnmount(){
       this.unsubscribe();
+      this.refreshChats
     }
 
     checkLoggedIn = async () => {
@@ -36,7 +38,7 @@ export default class ChatlistApp extends Component {
       return fetch('http://localhost:3333/api/1.0.0/chat',
       {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token')}
+        headers: {'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token')}
       })
       .then((response) => {
         if (response.status === 200){
@@ -61,10 +63,47 @@ export default class ChatlistApp extends Component {
       });
     }
 
+    async logout(){
+      console.log("Logout")
+
+      return fetch('http://localhost:3333/api/1.0.0/logout',
+        {
+          method: 'POST',
+          headers: {'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token')},
+        })
+        .then(async (response) =>  {
+          if(response.status === 200){
+            await AsyncStorage.removeItem("whatsthat_session_token")
+            await AsyncStorage.removeItem("whatsthat_user_id")
+            this.props.navigation.navigate("Login")
+          }
+          else if(response.status === 401){
+            console.log("Unauthorized")
+            await AsyncStorage.removeItem("whatsthat_session_token")
+            await AsyncStorage.removeItem("whatsthat_user_id")
+            this.props.navigation.navigate("Login")
+          }
+          else{
+            throw "Something went wrong"
+          }
+        })
+        .catch((error) => {
+          this.setState({"error": error})
+          this.setState({"submitted": false})
+        })
+    }
+
     render(){
         return(
             <View style={styles.container}>
                 <View style={styles.formContainer}>
+                    <View>
+                        <TouchableOpacity onPress={() => this.logout()}>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>Logout</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                     <FlatList
                       data={this.state.chats}
                       renderItem={({item}) => <ChatPreview name={item.name} creatorName = {item.creator.first_name} messagePreview = {item.last_message.message}/>}

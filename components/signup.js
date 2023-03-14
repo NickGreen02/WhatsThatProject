@@ -81,6 +81,7 @@ export default class SignupApp extends Component {
                         <TextInput 
                         placeholder='Enter first name'
                         onChangeText={value=>{this.setState({firstname:value})}}
+                        value={this.state.firstname}
                         />
                     </View>
 
@@ -88,6 +89,7 @@ export default class SignupApp extends Component {
                         <TextInput 
                         placeholder='Enter surname'
                         onChangeText={value=>{this.setState({surname:value})}}
+                        value={this.state.surname}
                         />
                     </View>
 
@@ -95,6 +97,7 @@ export default class SignupApp extends Component {
                         <TextInput 
                         placeholder='Enter email'
                         onChangeText={value=>{this.setState({email:value})}}
+                        value={this.state.email}
                         />
                     </View>
 
@@ -103,11 +106,12 @@ export default class SignupApp extends Component {
                         placeholder='Enter password'
                         secureTextEntry={true}
                         onChangeText={value=>{this.setState({password:value})}}
+                        value={this.state.password}
                         />
                     </View>
 
                     <View>
-                        <TouchableOpacity onPress={this.signup}>
+                        <TouchableOpacity onPress={() => this.signup()}>
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Sign up</Text>
                             </View>
