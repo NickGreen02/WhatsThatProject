@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-web';
+import { View, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import ChatPreview from './chatPreview';
+import Contact from './contact';
 
-
-export default class ChatlistApp extends Component {
+export default class ContactListApp extends Component {
     constructor(props){
         super(props);
         this.state = {chats: {}};
@@ -35,7 +34,7 @@ export default class ChatlistApp extends Component {
     }
 
     async getData(){
-      return fetch('http://localhost:3333/api/1.0.0/chat',
+      return fetch('http://localhost:3333/api/1.0.0/contacts',
       {
         method: 'GET',
         headers: {'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token')}
@@ -56,7 +55,7 @@ export default class ChatlistApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson)
-        this.setState({chats: rJson})
+        this.setState({contacts: rJson})
       })
       .catch((error) => {
         console.log(error);
@@ -97,17 +96,10 @@ export default class ChatlistApp extends Component {
         return(
             <View style={styles.container}>
                 <View style={styles.formContainer}>
-                    <View>
-                        <TouchableOpacity onPress={() => this.logout()}>
-                            <View style={styles.button}>
-                                <Text style={styles.buttonText}>Logout</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
                     <FlatList
-                      data={this.state.chats}
-                      renderItem={({item}) => <ChatPreview name={item.name} creatorName = {item.creator.first_name} messagePreview = {item.last_message.message}/>}
-                      keyExtractor={item => item.chat_id}
+                      data={this.state.contacts}
+                      renderItem={({item}) => <Contact firstname={item.first_name} surname={item.last_name}/>}
+                      keyExtractor={item => item.user_id}
                     />
                 </View>
             </View>
@@ -120,20 +112,11 @@ const styles = StyleSheet.create({
     container:{
       flex: 1,
       width: "100%",
-      alignItems:"stretch",
+      alignItems:"stretchc",
       justifyContent:"flex-start"
     },
     formContainer: {
       
-    },
-    button: {
-      backgroundColor: '#25D366',
-      margin: 10,
-    },
-    buttonText: {
-      textAlign: 'center',
-      padding: 20,
-      color: 'white'
     },
     error: {
       color: 'red',

@@ -4,8 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './components/login';
 import SignupScreen from './components/signup';
+
 import ChatlistScreen from './components/chatList';
-import CreateChatScreen from './components/createChat'
+import CreateChatScreen from './components/createChat';
+import ContactScreen from './components/contactsList';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -16,6 +18,7 @@ function Home(){
     <Tab.Navigator screenOptions={{headerShown:false}}>
         <Tab.Screen name="Chats" component={ChatlistScreen}/>
         <Tab.Screen name="Add Chat" component={CreateChatScreen}/>
+        <Tab.Screen name="Contacts" component={ContactScreen}/>
     </Tab.Navigator>
   )
 }
