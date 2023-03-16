@@ -1,0 +1,27 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "react/jsx-filename-extension": ["error", {"extensions": [".js", ".jsx"]}],
+        "linebreak-style": 0,
+        "max-len": 0,
+        "no-use-before-define": 0,
+        "react/prefer-stateless-function": 0
+    }
+}
