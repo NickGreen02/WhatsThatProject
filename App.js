@@ -9,16 +9,28 @@ import ChatlistScreen from './components/chatList';
 import CreateChatScreen from './components/createChat';
 import ContactScreen from './components/contactsList';
 
+import ProfileScreen from './components/userProfile';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const ProfileStack = createNativeStackNavigator();
+
+function ProfileNav() {
+  return (
+    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProfileStack.Screen name="ContactScreen" component={ContactScreen} />
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: true }} />
+    </ProfileStack.Navigator>
+  );
+}
 
 function Home() {
   return (
     // add tab navigator for screens once logged in
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator initialRouteName="Chats" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Chats" component={ChatlistScreen} />
       <Tab.Screen name="Add Chat" component={CreateChatScreen} />
-      <Tab.Screen name="Contacts" component={ContactScreen} />
+      <Tab.Screen name="Contacts" component={ProfileNav} />
     </Tab.Navigator>
   );
 }

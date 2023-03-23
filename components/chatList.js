@@ -146,9 +146,12 @@ const styles = StyleSheet.create({
 });
 
 ChatlistApp.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     addListener: PropTypes.func.isRequired,
   }),
+};
+
+ChatlistApp.defaultProps = {
+  navigation: null,
 };

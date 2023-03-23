@@ -128,9 +128,9 @@ export default class LoginApp extends Component {
               </View>
             </TouchableOpacity>
           </View>
-
-          {errorstate && <Text style={styles.error}>{errorstate}</Text>}
-
+          <>
+            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+          </>
         </View>
       </View>
     );

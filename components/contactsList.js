@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-web';
+import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 
@@ -66,12 +66,17 @@ export default class ContactListApp extends Component {
 
   render() {
     const { contacts } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.formContainer}>
           <FlatList
             data={contacts}
-            renderItem={({ item }) => <Contact firstname={item.first_name} surname={item.last_name} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <Contact firstname={item.first_name} surname={item.last_name} />
+              </TouchableOpacity>
+            )}
             keyExtractor={(item) => item.user_id}
           />
         </View>
