@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
-import PropTypes from 'prop-types';
 
 export default class SignupApp extends Component {
   constructor(props) {
@@ -182,14 +181,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-SignupApp.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    addListener: PropTypes.func.isRequired,
-  }),
-};
-
-SignupApp.defaultProps = {
-  navigation: null,
-};

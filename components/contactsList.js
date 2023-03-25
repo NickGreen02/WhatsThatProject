@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PropTypes from 'prop-types';
 
 import Contact from './contact';
 
@@ -73,7 +72,7 @@ export default class ContactListApp extends Component {
           <FlatList
             data={contacts}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile', { user: item.user_id })}>
                 <Contact firstname={item.first_name} surname={item.last_name} />
               </TouchableOpacity>
             )}
@@ -102,14 +101,3 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
-
-ContactListApp.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    addListener: PropTypes.func.isRequired,
-  }),
-};
-
-ContactListApp.defaultProps = {
-  navigation: null,
-};

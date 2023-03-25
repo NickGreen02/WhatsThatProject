@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 export default class ChatPreview extends Component {
   render() {
@@ -48,13 +47,3 @@ const Styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-ChatPreview.propTypes = {
-  creatorName: PropTypes.string.isRequired,
-  messagePreview: PropTypes.string,
-  name: PropTypes.string.isRequired,
-};
-
-ChatPreview.defaultProps = {
-  messagePreview: 'No messages',
-};

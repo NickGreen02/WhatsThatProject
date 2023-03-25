@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 export default class Contact extends Component {
   render() {
@@ -31,8 +30,3 @@ const Styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-Contact.propTypes = {
-  firstname: PropTypes.string.isRequired,
-  surname: PropTypes.string.isRequired,
-};

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PropTypes from 'prop-types';
 
 import ChatPreview from './chatPreview';
 
@@ -111,7 +110,7 @@ export default class ChatlistApp extends Component {
           <FlatList
             data={chats}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatID: item.chat_id })}>
                 <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />
               </TouchableOpacity>
             )}
@@ -149,14 +148,3 @@ const Styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
-
-ChatlistApp.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    addListener: PropTypes.func.isRequired,
-  }),
-};
-
-ChatlistApp.defaultProps = {
-  navigation: null,
-};

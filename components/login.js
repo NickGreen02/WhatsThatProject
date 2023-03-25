@@ -5,7 +5,6 @@ import {
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PropTypes from 'prop-types';
 
 export default class LoginApp extends Component {
   constructor(props) {
@@ -170,14 +169,3 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
-
-LoginApp.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    addListener: PropTypes.func.isRequired,
-  }),
-};
-
-LoginApp.defaultProps = {
-  navigation: null,
-};
