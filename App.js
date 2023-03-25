@@ -6,6 +6,8 @@ import LoginScreen from './components/login';
 import SignupScreen from './components/signup';
 
 import ChatlistScreen from './components/chatList';
+import ChatScreen from './components/chatScreen';
+
 import CreateChatScreen from './components/createChat';
 import ContactScreen from './components/contactsList';
 
@@ -14,6 +16,7 @@ import ProfileScreen from './components/userProfile';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const ProfileStack = createNativeStackNavigator();
+const ChatStack = createNativeStackNavigator();
 
 function ProfileNav() {
   return (
@@ -24,11 +27,20 @@ function ProfileNav() {
   );
 }
 
+function ChatNav() {
+  return (
+    <ChatStack.Navigator screenOptions={{ headerShown: false }}>
+      <ChatStack.Screen name="ChatList" component={ChatlistScreen} />
+      <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
+    </ChatStack.Navigator>
+  );
+}
+
 function Home() {
   return (
     // add tab navigator for screens once logged in
     <Tab.Navigator initialRouteName="Chats" screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Chats" component={ChatlistScreen} />
+      <Tab.Screen name="Chats" component={ChatNav} />
       <Tab.Screen name="Add Chat" component={CreateChatScreen} />
       <Tab.Screen name="Contacts" component={ProfileNav} />
     </Tab.Navigator>

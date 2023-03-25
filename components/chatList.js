@@ -97,19 +97,24 @@ export default class ChatlistApp extends Component {
 
   render() {
     const { chats } = this.state;
+    const { navigation } = this.props;
     return (
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
+      <View style={Styles.container}>
+        <View style={Styles.formContainer}>
           <View>
             <TouchableOpacity onPress={() => this.logout()}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Logout</Text>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Logout</Text>
               </View>
             </TouchableOpacity>
           </View>
           <FlatList
             data={chats}
-            renderItem={({ item }) => <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')}>
+                <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />
+              </TouchableOpacity>
+            )}
             keyExtractor={(item) => item.chat_id}
           />
         </View>
@@ -119,7 +124,7 @@ export default class ChatlistApp extends Component {
 }
 
 // stylesheet for the page
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
