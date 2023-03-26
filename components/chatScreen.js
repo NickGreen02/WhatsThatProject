@@ -50,6 +50,18 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  editChat() {
+    console.log('chat edited test');
+  }
+
+  addUserToChat() {
+    console.log('user added to chat test');
+  }
+
+  leaveChat() {
+    console.log('left chat test');
+  }
+
   async send(messageText) {
     const { route } = this.props;
     const { chatID } = route.params;
@@ -78,9 +90,28 @@ export default class ChatScreenApp extends Component {
 
   render() {
     const { chat, messageToSend } = this.state;
+    // const { route } = this.props;
+    // const { chatID } = route.params;
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
+          <View style={Styles.optionsContainer}>
+            <TouchableOpacity onPress={() => this.editChat()}>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Edit Chat</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.addUserToChat()}>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Add User</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.leaveChat()}>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Leave Chat</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
           <View style={Styles.listContainer}>
             <FlatList
               data={chat.messages}
@@ -126,6 +157,21 @@ const Styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  optionButton: {
+    backgroundColor: '#25D366',
+    margin: 5,
+    width: '30vw',
+  },
+  optionButtonText: {
+    textAlign: 'center',
+    padding: 10,
+    color: 'white',
   },
   listContainer: {
     flex: 1,

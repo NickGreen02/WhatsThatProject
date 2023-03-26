@@ -100,10 +100,15 @@ export default class ChatlistApp extends Component {
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
-          <View>
+          <View style={Styles.optionsContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('YourProfile')}>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Your Profile</Text>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => this.logout()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Logout</Text>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Logout</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -131,6 +136,21 @@ const Styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   formContainer: {
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  optionButton: {
+    backgroundColor: '#25D366',
+    margin: 5,
+    width: '45vw',
+  },
+  optionButtonText: {
+    textAlign: 'center',
+    padding: 10,
+    color: 'white',
   },
   button: {
     backgroundColor: '#25D366',

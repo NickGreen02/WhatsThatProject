@@ -13,9 +13,12 @@ import ContactScreen from './components/contactsList';
 
 import ProfileScreen from './components/userProfile';
 
+import YourProfileScreen from './components/yourProfile';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const ProfileStack = createNativeStackNavigator();
+const YourProfileStack = createNativeStackNavigator();
 const ChatStack = createNativeStackNavigator();
 
 function ProfileNav() {
@@ -27,10 +30,19 @@ function ProfileNav() {
   );
 }
 
+function ChatAndYourProfileNav() {
+  return (
+    <YourProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <YourProfileStack.Screen name="ChatList" component={ChatlistScreen} />
+      <YourProfileStack.Screen name="YourProfile" component={YourProfileScreen} options={{ headerShown: true }} />
+    </YourProfileStack.Navigator>
+  );
+}
+
 function ChatNav() {
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
-      <ChatStack.Screen name="ChatList" component={ChatlistScreen} />
+      <ChatStack.Screen name="ChatAndUserProfile" component={ChatAndYourProfileNav} />
       <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
     </ChatStack.Navigator>
   );
