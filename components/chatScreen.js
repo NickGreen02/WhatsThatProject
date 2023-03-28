@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   View, Text, TextInput, StyleSheet,
 } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-web';
+import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class ChatScreenApp extends Component {
@@ -11,6 +11,7 @@ export default class ChatScreenApp extends Component {
     this.state = {
       chat: {},
       messageToSend: '',
+      isLoading: true,
     };
   }
 
@@ -43,7 +44,7 @@ export default class ChatScreenApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        this.setState({ chat: rJson });
+        this.setState({ chat: rJson, isLoading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -82,68 +83,81 @@ export default class ChatScreenApp extends Component {
           message: messageText,
         }),
       },
-    )
+    ).then((rJson) => {
+      console.log(rJson);
+      this.setState({ isLoading: true });
+      this.getData();
+    })
       .catch((error) => {
         console.error(error);
       });
   }
 
   render() {
-    const { chat, messageToSend } = this.state;
+    const { chat, messageToSend, isLoading } = this.state;
     // const { route } = this.props;
     // const { chatID } = route.params;
-    return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
-          <View style={Styles.optionsContainer}>
-            <TouchableOpacity onPress={() => this.editChat()}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Edit Chat</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.addUserToChat()}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Add User</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.leaveChat()}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Leave Chat</Text>
-              </View>
-            </TouchableOpacity>
+    if (isLoading) {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <ActivityIndicator />
           </View>
-          <View style={Styles.listContainer}>
-            <FlatList
-              data={chat.messages}
-              inverted
-              extraData={chat}
-              renderItem={({ item }) => (
-                <View style={Styles.messageBubble}>
-                  <Text>
-                    {item.author.first_name}
-                    {' '}
-                    {item.author.last_name}
-                  </Text>
-                  <Text>{item.message}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <View style={Styles.optionsContainer}>
+              <TouchableOpacity onPress={() => this.editChat()}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Edit Chat</Text>
                 </View>
-              )}
-              keyExtractor={(item) => item.message_id}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.addUserToChat()}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Add User</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.leaveChat()}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Leave Chat</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={Styles.listContainer}>
+              <FlatList
+                data={chat.messages}
+                inverted
+                renderItem={({ item }) => (
+                  <View style={Styles.messageBubble}>
+                    <Text>
+                      {item.author.first_name}
+                      {' '}
+                      {item.author.last_name}
+                    </Text>
+                    <Text>{item.message}</Text>
+                  </View>
+                )}
+                keyExtractor={(item) => item.message_id}
+              />
+            </View>
+          </View>
+          <View style={Styles.sendContainer}>
+            <TextInput
+              style={Styles.sendMessage}
+              placeholder="Send a message..."
+              onChangeText={(value) => { this.setState({ messageToSend: value }); }}
+              defaultValue={messageToSend}
             />
+            <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
+              <Text style={Styles.buttonText}>Send</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={Styles.sendContainer}>
-          <TextInput
-            style={Styles.sendMessage}
-            placeholder="Send a message..."
-            onChangeText={(value) => { this.setState({ messageToSend: value }); }}
-            defaultValue={messageToSend}
-          />
-          <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
-            <Text style={Styles.buttonText}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

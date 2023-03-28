@@ -96,20 +96,143 @@ export default class YourProfileApp extends Component {
       });
   }
 
-  changeLastName() {
-    console.log('change last name test');
+  async changeLastName() {
+    const { lastnamechange } = this.state;
+    const { navigation } = this.props;
+    const user = await AsyncStorage.getItem('whatsthat_user_id');
+    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
+    const url = urlTemplate.concat(user);
+    return fetch(
+      url,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+        },
+        body: JSON.stringify({
+          last_name: lastnamechange,
+        }),
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ChatList');
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  changePassword() {
-    console.log('change password test');
+  async changePassword() {
+    const { passwordchange } = this.state;
+    const { navigation } = this.props;
+    const user = await AsyncStorage.getItem('whatsthat_user_id');
+    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
+    const url = urlTemplate.concat(user);
+    return fetch(
+      url,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+        },
+        body: JSON.stringify({
+          password: passwordchange,
+        }),
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ChatList');
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  changeEmail() {
-    console.log('change email address test');
+  async changeEmail() {
+    const { emailchange } = this.state;
+    const { navigation } = this.props;
+    const user = await AsyncStorage.getItem('whatsthat_user_id');
+    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
+    const url = urlTemplate.concat(user);
+    return fetch(
+      url,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+        },
+        body: JSON.stringify({
+          email: emailchange,
+        }),
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ChatList');
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
-    const { userData, firstnamechange } = this.state;
+    const {
+      userData,
+      firstnamechange,
+      lastnamechange,
+      passwordchange,
+      emailchange,
+    } = this.state;
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
@@ -132,19 +255,34 @@ export default class YourProfileApp extends Component {
                 <Text style={Styles.buttonText}>Update</Text>
               </View>
             </TouchableOpacity>
-            <TextInput style={Styles.updateInput} placeholder="Change your last name" />
+            <TextInput
+              style={Styles.updateInput}
+              placeholder="Change your last name"
+              onChangeText={(value) => { this.setState({ lastnamechange: value }); }}
+              value={lastnamechange}
+            />
             <TouchableOpacity onPress={() => this.changeLastName()}>
               <View style={Styles.updateButton}>
                 <Text style={Styles.buttonText}>Update</Text>
               </View>
             </TouchableOpacity>
-            <TextInput style={Styles.updateInput} placeholder="Change your password" />
+            <TextInput
+              style={Styles.updateInput}
+              placeholder="Change your password"
+              onChangeText={(value) => { this.setState({ passwordchange: value }); }}
+              value={passwordchange}
+            />
             <TouchableOpacity onPress={() => this.changePassword()}>
               <View style={Styles.updateButton}>
                 <Text style={Styles.buttonText}>Update</Text>
               </View>
             </TouchableOpacity>
-            <TextInput style={Styles.updateInput} placeholder="Change your email address" />
+            <TextInput
+              style={Styles.updateInput}
+              placeholder="Change your email address"
+              onChangeText={(value) => { this.setState({ emailchange: value }); }}
+              value={emailchange}
+            />
             <TouchableOpacity onPress={() => this.changeEmail()}>
               <View style={Styles.updateButton}>
                 <Text style={Styles.buttonText}>Update</Text>
