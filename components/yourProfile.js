@@ -24,10 +24,8 @@ export default class YourProfileApp extends Component {
 
   async getData() {
     const user = await AsyncStorage.getItem('whatsthat_user_id');
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(user);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -57,10 +55,8 @@ export default class YourProfileApp extends Component {
     const { firstnamechange } = this.state;
     const { navigation } = this.props;
     const user = await AsyncStorage.getItem('whatsthat_user_id');
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(user);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'PATCH',
         headers: {
@@ -100,10 +96,8 @@ export default class YourProfileApp extends Component {
     const { lastnamechange } = this.state;
     const { navigation } = this.props;
     const user = await AsyncStorage.getItem('whatsthat_user_id');
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(user);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'PATCH',
         headers: {
@@ -143,10 +137,8 @@ export default class YourProfileApp extends Component {
     const { passwordchange } = this.state;
     const { navigation } = this.props;
     const user = await AsyncStorage.getItem('whatsthat_user_id');
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(user);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'PATCH',
         headers: {
@@ -186,10 +178,8 @@ export default class YourProfileApp extends Component {
     const { emailchange } = this.state;
     const { navigation } = this.props;
     const user = await AsyncStorage.getItem('whatsthat_user_id');
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(user);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'PATCH',
         headers: {

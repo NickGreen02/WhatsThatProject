@@ -19,10 +19,8 @@ export default class UserProfileApp extends Component {
   async getData() {
     const { route } = this.props;
     const { user } = route.params;
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/user/';
-    const url = urlTemplate.concat(JSON.stringify(user));
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -51,13 +49,8 @@ export default class UserProfileApp extends Component {
   async removeContact() {
     const { route, navigation } = this.props;
     const { user } = route.params;
-    const urlTemplate1 = 'http://localhost:3333/api/1.0.0/user/';
-    const urlTemplate2 = '/contact';
-    const urlTemplate3 = urlTemplate1.concat(JSON.stringify(user));
-    const url = urlTemplate3.concat(urlTemplate2);
-    console.log(url);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/user/${user}/contact`,
       {
         method: 'DELETE',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },

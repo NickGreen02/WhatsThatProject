@@ -8,7 +8,7 @@ import ChatPreview from './chatPreview';
 export default class ChatlistApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { chats: {} };
+    this.state = { chats: {}, user: '' };
   }
 
   componentDidMount() {
@@ -58,8 +58,11 @@ export default class ChatlistApp extends Component {
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
+    const userID = await AsyncStorage.getItem('whatsthat_user_id');
     if (value == null) {
       navigation.navigate('Login');
+    } else {
+      this.state.user = userID;
     }
   };
 
@@ -95,8 +98,9 @@ export default class ChatlistApp extends Component {
   }
 
   render() {
-    const { chats } = this.state;
+    const { chats, user } = this.state;
     const { navigation } = this.props;
+
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
@@ -115,7 +119,7 @@ export default class ChatlistApp extends Component {
           <FlatList
             data={chats}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatID: item.chat_id })}>
+              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatID: item.chat_id, userID: user })}>
                 <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />
               </TouchableOpacity>
             )}

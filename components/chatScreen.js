@@ -22,10 +22,8 @@ export default class ChatScreenApp extends Component {
   async getData() {
     const { route } = this.props;
     const { chatID } = route.params;
-    const urlTemplate = 'http://localhost:3333/api/1.0.0/chat/';
-    const url = urlTemplate.concat(JSON.stringify(chatID));
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/chat/${chatID}`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -59,8 +57,40 @@ export default class ChatScreenApp extends Component {
     console.log('user added to chat test');
   }
 
-  leaveChat() {
-    console.log('left chat test');
+  async leaveChat() {
+    const { route, navigation } = this.props;
+    const { chatID, userID } = route.params;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/chat/${chatID}/user/${userID}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+        },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ChatList');
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   async send(messageText) {
@@ -95,8 +125,9 @@ export default class ChatScreenApp extends Component {
 
   render() {
     const { chat, messageToSend, isLoading } = this.state;
-    // const { route } = this.props;
-    // const { chatID } = route.params;
+    const { route } = this.props;
+    const { userID } = route.params;
+    console.log(userID);
     if (isLoading) {
       return (
         <View style={Styles.container}>
