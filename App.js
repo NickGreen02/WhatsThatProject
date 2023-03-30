@@ -11,6 +11,8 @@ import ChatScreen from './components/chatScreen';
 import CreateChatScreen from './components/createChat';
 import ContactScreen from './components/contactsList';
 
+import BlockedScreen from './components/blockedList';
+
 import ProfileScreen from './components/userProfile';
 
 import YourProfileScreen from './components/yourProfile';
@@ -21,10 +23,11 @@ const ProfileStack = createNativeStackNavigator();
 const YourProfileStack = createNativeStackNavigator();
 const ChatStack = createNativeStackNavigator();
 
-function ProfileNav() {
+function ContactNav() {
   return (
     <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="ContactScreen" component={ContactScreen} />
+      <ProfileStack.Screen name="Blocked" component={BlockedScreen} options={{ headerShown: true }} />
       <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: true }} />
     </ProfileStack.Navigator>
   );
@@ -54,7 +57,7 @@ function Home() {
     <Tab.Navigator initialRouteName="Chats" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Chats" component={ChatNav} />
       <Tab.Screen name="Add Chat" component={CreateChatScreen} />
-      <Tab.Screen name="Contacts" component={ProfileNav} />
+      <Tab.Screen name="Contacts" component={ContactNav} />
     </Tab.Navigator>
   );
 }

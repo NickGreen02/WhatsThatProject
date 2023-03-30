@@ -76,6 +76,40 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  async blockContact() {
+    const { route, navigation } = this.props;
+    const { user } = route.params;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/user/${user}/block`,
+      {
+        method: 'POST',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ContactScreen');
+          return response.json();
+        } if (response.status === 400) {
+          throw new Error('Self-blocking not allowed');
+        } if (response.status === 401) {
+          throw new Error('Unauthorised');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     const { userData } = this.state;
     return (
@@ -91,6 +125,11 @@ export default class UserProfileApp extends Component {
           <TouchableOpacity onPress={() => this.removeContact()}>
             <View style={Styles.button}>
               <Text style={Styles.buttonText}>Remove Contact</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.blockContact()}>
+            <View style={Styles.button}>
+              <Text style={Styles.buttonText}>Block Contact</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -113,7 +152,7 @@ const Styles = StyleSheet.create({
   button: {
     backgroundColor: '#25D366',
     margin: 5,
-    marginBottom: 30,
+    marginBottom: 15,
   },
   buttonText: {
     textAlign: 'center',

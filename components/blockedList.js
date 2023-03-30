@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,7 +8,7 @@ import Contact from './contact';
 export default class ContactListApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { contacts: {} };
+    this.state = { blocked: {} };
   }
 
   componentDidMount() {
@@ -29,7 +29,7 @@ export default class ContactListApp extends Component {
 
   async getData() {
     return fetch(
-      'http://localhost:3333/api/1.0.0/contacts',
+      'http://localhost:3333/api/1.0.0/blocked',
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -48,7 +48,7 @@ export default class ContactListApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        this.setState({ contacts: rJson });
+        this.setState({ blocked: rJson });
       })
       .catch((error) => {
         console.log(error);
@@ -64,20 +64,13 @@ export default class ContactListApp extends Component {
   };
 
   render() {
-    const { contacts } = this.state;
+    const { blocked } = this.state;
     const { navigation } = this.props;
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
-          <View style={Styles.optionsContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Blocked')}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Blocked Users</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
           <FlatList
-            data={contacts}
+            data={blocked}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => navigation.navigate('Profile', { user: item.user_id })}>
                 <Contact firstname={item.first_name} surname={item.last_name} />
@@ -100,21 +93,6 @@ const Styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   formContainer: {
-  },
-  optionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  optionButton: {
-    backgroundColor: '#25D366',
-    margin: 5,
-    width: '45vw',
-  },
-  optionButtonText: {
-    textAlign: 'center',
-    padding: 10,
-    color: 'white',
   },
   error: {
     color: 'red',

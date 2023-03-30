@@ -96,13 +96,8 @@ export default class ChatScreenApp extends Component {
   async send(messageText) {
     const { route } = this.props;
     const { chatID } = route.params;
-    const urlTemplate1 = 'http://localhost:3333/api/1.0.0/chat/';
-    const urlTemplate2 = '/message';
-    const urlTemplate3 = urlTemplate1.concat(JSON.stringify(chatID));
-    const url = urlTemplate3.concat(urlTemplate2);
-    console.log(url);
     return fetch(
-      url,
+      `http://localhost:3333/api/1.0.0/chat/${chatID}/message`,
       {
         method: 'POST',
         headers: {
@@ -115,7 +110,7 @@ export default class ChatScreenApp extends Component {
       },
     ).then((rJson) => {
       console.log(rJson);
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true, messageToSend: '' });
       this.getData();
     })
       .catch((error) => {
@@ -163,7 +158,7 @@ export default class ChatScreenApp extends Component {
                 inverted
                 renderItem={({ item }) => (
                   <View style={Styles.messageBubble}>
-                    <Text>
+                    <Text style={Styles.messageAuthorText}>
                       {item.author.first_name}
                       {' '}
                       {item.author.last_name}
@@ -181,6 +176,7 @@ export default class ChatScreenApp extends Component {
               placeholder="Send a message..."
               onChangeText={(value) => { this.setState({ messageToSend: value }); }}
               defaultValue={messageToSend}
+              multiline
             />
             <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
               <Text style={Styles.buttonText}>Send</Text>
@@ -230,6 +226,11 @@ const Styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     margin: 5,
+  },
+  messageAuthorText: {
+    fontSize: '1rem',
+    fontWeight: '600',
+    marginBottom: 5,
   },
   sendContainer: {
     flexDirection: 'row',
