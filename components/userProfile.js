@@ -8,10 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class UserProfileApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { userData: {} };
+    this.state = { userData: {}, blockCheck: false };
   }
 
   componentDidMount() {
+    this.checkBlocked();
     this.getData();
     console.log('Data displayed');
   }
@@ -44,6 +45,15 @@ export default class UserProfileApp extends Component {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  checkBlocked() {
+    const { route } = this.props;
+    const { blockNav } = route.params;
+
+    if (blockNav === true) {
+      this.setState({ blockCheck: true });
+    }
   }
 
   async removeContact() {
@@ -110,31 +120,91 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  async unblockContact() {
+    const { route, navigation } = this.props;
+    const { user } = route.params;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/user/${user}/block`,
+      {
+        method: 'DELETE',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate('ContactScreen');
+          return response.json();
+        } if (response.status === 400) {
+          throw new Error('Self-blocking not allowed');
+        } if (response.status === 401) {
+          throw new Error('Unauthorised');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
-    const { userData } = this.state;
-    return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
-          <Image />
-          <Text style={Styles.name}>
-            {userData.first_name}
-            {' '}
-            {userData.last_name}
-          </Text>
-          <Text style={Styles.email}>{userData.email}</Text>
-          <TouchableOpacity onPress={() => this.removeContact()}>
-            <View style={Styles.button}>
-              <Text style={Styles.buttonText}>Remove Contact</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.blockContact()}>
-            <View style={Styles.button}>
-              <Text style={Styles.buttonText}>Block Contact</Text>
-            </View>
-          </TouchableOpacity>
+    const { userData, blockCheck } = this.state;
+    if (blockCheck) {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <Image />
+            <Text style={Styles.name}>
+              {userData.first_name}
+              {' '}
+              {userData.last_name}
+            </Text>
+            <Text style={Styles.email}>{userData.email}</Text>
+            <TouchableOpacity onPress={() => this.removeContact()}>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Remove Contact</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.unblockContact()}>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Unblock Contact</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <Image />
+            <Text style={Styles.name}>
+              {userData.first_name}
+              {' '}
+              {userData.last_name}
+            </Text>
+            <Text style={Styles.email}>{userData.email}</Text>
+            <TouchableOpacity onPress={() => this.removeContact()}>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Remove Contact</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.blockContact()}>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Block Contact</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
   }
 }
 

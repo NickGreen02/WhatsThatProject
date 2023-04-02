@@ -79,7 +79,7 @@ export default class ContactListApp extends Component {
           <FlatList
             data={contacts}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigation.navigate('Profile', { user: item.user_id })}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile', { user: item.user_id, blockNav: false })}>
                 <Contact firstname={item.first_name} surname={item.last_name} />
               </TouchableOpacity>
             )}
