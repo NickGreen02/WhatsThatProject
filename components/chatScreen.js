@@ -57,6 +57,10 @@ export default class ChatScreenApp extends Component {
     console.log('user added to chat test');
   }
 
+  removeUserFromChat() {
+    console.log('user removed from chat test');
+  }
+
   async leaveChat() {
     const { route, navigation } = this.props;
     const { chatID, userID } = route.params;
@@ -120,8 +124,8 @@ export default class ChatScreenApp extends Component {
 
   render() {
     const { chat, messageToSend, isLoading } = this.state;
-    const { route } = this.props;
-    const { userID } = route.params;
+    const { route, navigation } = this.props;
+    const { userID, chatID } = route.params;
     console.log(userID);
     if (isLoading) {
       return (
@@ -136,14 +140,19 @@ export default class ChatScreenApp extends Component {
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
             <View style={Styles.optionsContainer}>
-              <TouchableOpacity onPress={() => this.editChat()}>
+              <TouchableOpacity onPress={() => navigation.navigate('ChatNameScreen', { chatId: chatID })}>
                 <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Edit Chat</Text>
+                  <Text style={Styles.optionButtonText}>Edit Chat Name</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.addUserToChat()}>
                 <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Add User</Text>
+                  <Text style={Styles.optionButtonText}>Add User To Chat</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.removeUserFromChat()}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Remove User</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.leaveChat()}>
@@ -206,11 +215,11 @@ const Styles = StyleSheet.create({
   },
   optionButton: {
     backgroundColor: '#25D366',
-    margin: 5,
-    width: '30vw',
+    margin: 3,
+    width: '20vw',
   },
   optionButtonText: {
-    textAlign: 'center',
+    alignText: 'center',
     padding: 10,
     color: 'white',
   },
