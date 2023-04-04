@@ -112,11 +112,34 @@ export default class ChatScreenApp extends Component {
           message: messageText,
         }),
       },
-    ).then((rJson) => {
-      console.log(rJson);
-      this.setState({ isLoading: true, messageToSend: '' });
-      this.getData();
-    })
+    )
+      .then((rJson) => {
+        console.log(rJson);
+        this.setState({ isLoading: true, messageToSend: '' });
+        this.getData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async deleteMessage(messageID) {
+    const { route } = this.props;
+    const { chatID } = route.params;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/chat/${chatID}/message/${messageID}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+        },
+      },
+    )
+      .then((rJson) => {
+        console.log(rJson);
+        this.setState({ isLoading: true });
+        this.getData();
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -167,12 +190,19 @@ export default class ChatScreenApp extends Component {
                 inverted
                 renderItem={({ item }) => (
                   <View style={Styles.messageBubble}>
-                    <Text style={Styles.messageAuthorText}>
-                      {item.author.first_name}
-                      {' '}
-                      {item.author.last_name}
-                    </Text>
-                    <Text>{item.message}</Text>
+                    <View style={Styles.messageContainer}>
+                      <View style={Styles.messageTextContainer}>
+                        <Text style={Styles.messageAuthorText}>
+                          {item.author.first_name}
+                          {' '}
+                          {item.author.last_name}
+                        </Text>
+                        <Text>{item.message}</Text>
+                      </View>
+                      <TouchableOpacity style={Styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
+                        <Text style={Styles.deleteButtonText}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 )}
                 keyExtractor={(item) => item.message_id}
@@ -236,10 +266,26 @@ const Styles = StyleSheet.create({
     padding: 10,
     margin: 5,
   },
+  messageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  messageTextContainer: {
+    flexDirection: 'column',
+  },
   messageAuthorText: {
     fontSize: '1rem',
     fontWeight: '600',
     marginBottom: 5,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+  },
+  deleteButtonText: {
+    textAlign: 'center',
+    padding: 5,
+    color: 'white',
   },
   sendContainer: {
     flexDirection: 'row',
