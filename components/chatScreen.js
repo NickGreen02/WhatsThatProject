@@ -16,7 +16,19 @@ export default class ChatScreenApp extends Component {
   }
 
   componentDidMount() {
-    this.getData();
+    const { navigation } = this.props;
+    this.unsubscribe = navigation.addListener('focus', () => {
+      this.checkLoggedIn();
+    });
+    this.refreshChats = navigation.addListener('focus', () => {
+      this.getData();
+    });
+    console.log('Data displayed');
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.refreshChats();
   }
 
   async getData() {
@@ -48,6 +60,14 @@ export default class ChatScreenApp extends Component {
         console.log(error);
       });
   }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const value = await AsyncStorage.getItem('whatsthat_session_token');
+    if (value == null || value === '') {
+      navigation.navigate('Login');
+    }
+  };
 
   editChat() {
     console.log('chat edited test');

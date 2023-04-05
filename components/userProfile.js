@@ -12,9 +12,20 @@ export default class UserProfileApp extends Component {
   }
 
   componentDidMount() {
+    const { navigation } = this.props;
     this.checkBlocked();
-    this.getData();
+    this.unsubscribe = navigation.addListener('focus', () => {
+      this.checkLoggedIn();
+    });
+    this.refreshProfile = navigation.addListener('focus', () => {
+      this.getData();
+    });
     console.log('Data displayed');
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.refreshProfile();
   }
 
   async getData() {
@@ -46,6 +57,14 @@ export default class UserProfileApp extends Component {
         console.log(error);
       });
   }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const value = await AsyncStorage.getItem('whatsthat_session_token');
+    if (value == null || value === '') {
+      navigation.navigate('Login');
+    }
+  };
 
   checkBlocked() {
     const { route } = this.props;

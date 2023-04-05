@@ -2,24 +2,19 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import LoginScreen from './components/login';
 import SignupScreen from './components/signup';
-
 import ChatlistScreen from './components/chatList';
 import ChatScreen from './components/chatScreen';
-
 import CreateChatScreen from './components/createChat';
 import ContactScreen from './components/contactsList';
-
 import BlockedScreen from './components/blockedList';
-
 import ProfileScreen from './components/userProfile';
-
 import YourProfileScreen from './components/yourProfile';
-
 import ChatNameScreen from './components/chatName';
-
 import UpdateProfile from './components/updateProfile';
+import SearchScreen from './components/search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,6 +28,7 @@ function ContactNav() {
       <ProfileStack.Screen name="ContactScreen" component={ContactScreen} />
       <ProfileStack.Screen name="Blocked" component={BlockedScreen} options={{ headerShown: true }} />
       <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: true }} />
+      <ProfileStack.Screen name="Search" component={SearchScreen} options={{ headerShown: true }} />
     </ProfileStack.Navigator>
   );
 }

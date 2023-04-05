@@ -58,11 +58,8 @@ export default class ChatlistApp extends Component {
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
-    const userID = await AsyncStorage.getItem('whatsthat_user_id');
-    if (value == null) {
+    if (value == null || value === '') {
       navigation.navigate('Login');
-    } else {
-      this.state.user = userID;
     }
   };
 

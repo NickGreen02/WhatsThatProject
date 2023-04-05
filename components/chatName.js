@@ -18,6 +18,7 @@ export default class ChatNameApp extends Component {
     this.unsubscribe = navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
+    console.log('Data displayed');
   }
 
   componentWillUnmount() {
@@ -27,7 +28,7 @@ export default class ChatNameApp extends Component {
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
-    if (value == null) {
+    if (value == null || value === '') {
       navigation.navigate('Login');
     }
   };

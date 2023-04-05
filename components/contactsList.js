@@ -58,7 +58,7 @@ export default class ContactListApp extends Component {
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
-    if (value == null) {
+    if (value == null || value === '') {
       navigation.navigate('Login');
     }
   };
@@ -73,6 +73,11 @@ export default class ContactListApp extends Component {
             <TouchableOpacity onPress={() => navigation.navigate('Blocked')}>
               <View style={Styles.optionButton}>
                 <Text style={Styles.optionButtonText}>Blocked Users</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+              <View style={Styles.optionButton}>
+                <Text style={Styles.optionButtonText}>Search Users</Text>
               </View>
             </TouchableOpacity>
           </View>

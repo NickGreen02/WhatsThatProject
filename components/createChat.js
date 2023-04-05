@@ -27,7 +27,7 @@ export default class CreateChatApp extends Component {
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
-    if (value == null) {
+    if (value == null || value === '') {
       navigation.navigate('Login');
     }
   };
@@ -79,11 +79,11 @@ export default class CreateChatApp extends Component {
   render() {
     const { errorstate } = this.state;
     return (
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
+      <View style={Styles.container}>
+        <View style={Styles.formContainer}>
+          <View style={Styles.inputContainer}>
             <TextInput
-              style={styles.name}
+              style={Styles.name}
               placeholder="Enter chat name"
               // eslint-disable-next-line react/no-unused-state
               onChangeText={(value) => { this.setState({ chatname: value }); }}
@@ -91,13 +91,13 @@ export default class CreateChatApp extends Component {
           </View>
           <View>
             <TouchableOpacity onPress={() => this.createChat()}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Create new chat</Text>
+              <View style={Styles.button}>
+                <Text style={Styles.buttonText}>Create new chat</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+          {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
 
         </View>
       </View>
@@ -105,7 +105,7 @@ export default class CreateChatApp extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

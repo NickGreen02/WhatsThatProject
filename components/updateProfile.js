@@ -24,8 +24,11 @@ export default class UpdateProfile extends Component {
   }
 
   componentDidMount() {
-    const { route } = this.props;
+    const { route, navigation } = this.props;
     const { data } = route.params;
+    this.unsubscribe = navigation.addListener('focus', () => {
+      this.checkLoggedIn();
+    });
     this.setState({
       originalData: data,
       firstnamechange: data.first_name,
@@ -35,6 +38,18 @@ export default class UpdateProfile extends Component {
     });
     console.log('Initial data set');
   }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const value = await AsyncStorage.getItem('whatsthat_session_token');
+    if (value == null || value === '') {
+      navigation.navigate('Login');
+    }
+  };
 
   async updateInfo() {
     const {
