@@ -29,8 +29,32 @@ export default class SearchScreen extends Component {
     this.refreshUsers();
   }
 
-  getData() {
-    console.log('get data test');
+  async getData() {
+    return fetch(
+      'http://localhost:3333/api/1.0.0/search',
+      {
+        method: 'GET',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised');
+        } else if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((rJson) => {
+        console.log(rJson);
+        this.setState({ users: rJson });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   checkLoggedIn = async () => {
@@ -40,6 +64,14 @@ export default class SearchScreen extends Component {
       navigation.navigate('Login');
     }
   };
+
+  search() {
+    console.log('search function test');
+  }
+
+  addContact() {
+    console.log('add contact test');
+  }
 
   render() {
     const { searchString, users } = this.state;
@@ -63,7 +95,7 @@ export default class SearchScreen extends Component {
             data={users}
             renderItem={({ item }) => (
               <View style={Styles.listItemContainer}>
-                <Contact firstname={item.first_name} surname={item.last_name} />
+                <Contact firstname={item.given_name} surname={item.family_name} />
                 <TouchableOpacity onPress={() => this.addContact(item.user_id)}>
                   <View style={Styles.addContactButton}>
                     <Text style={Styles.buttonText}>Add Contact</Text>
@@ -93,6 +125,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 5,
   },
   searchBar: {
     borderLeftWidth: 'thin',
@@ -105,7 +138,7 @@ const Styles = StyleSheet.create({
   },
   searchButton: {
     backgroundColor: '#25D366',
-    margin: 3,
+    margin: 5,
     width: '20vw',
     justifyContent: 'center',
     alignItems: 'center',
@@ -115,6 +148,14 @@ const Styles = StyleSheet.create({
     color: 'white',
   },
   listItemContainer: {
-    flexDirection: 'row',
+    alignItems: 'stretch',
+    margin: 5,
+  },
+  addContactButton: {
+    justifyContent: 'center',
+    backgroundColor: '#25D366',
+    marginTop: 2,
+    marginBottom: 8,
+    margin: 5,
   },
 });

@@ -6,8 +6,11 @@ export default class Contact extends Component {
     const { firstname, surname } = this.props;
     return (
       <View style={Styles.contactBorder}>
-        <Text style={Styles.name}>{firstname}</Text>
-        <Text style={Styles.name}>{surname}</Text>
+        <Text style={Styles.name}>
+          {firstname}
+          {' '}
+          {surname}
+        </Text>
       </View>
     );
   }
