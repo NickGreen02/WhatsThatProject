@@ -128,6 +128,7 @@ export default class UpdateProfile extends Component {
       emailchange,
       errorstate,
     } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
@@ -159,6 +160,11 @@ export default class UpdateProfile extends Component {
             <TouchableOpacity onPress={() => this.updateInfo()}>
               <View style={Styles.updateButton}>
                 <Text style={Styles.buttonText}>Update Profile</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('TakePhoto')}>
+              <View style={Styles.updateButton}>
+                <Text style={Styles.buttonText}>Add Profile Photo</Text>
               </View>
             </TouchableOpacity>
           </View>

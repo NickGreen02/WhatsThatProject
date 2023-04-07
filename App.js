@@ -15,6 +15,7 @@ import YourProfileScreen from './components/yourProfile';
 import ChatNameScreen from './components/chatName';
 import UpdateProfile from './components/updateProfile';
 import SearchScreen from './components/search';
+import TakePhoto from './components/takePhoto';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,6 +40,7 @@ function ChatAndYourProfileNav() {
       <YourProfileStack.Screen name="ChatList" component={ChatlistScreen} />
       <YourProfileStack.Screen name="YourProfile" component={YourProfileScreen} options={{ headerShown: true }} />
       <YourProfileStack.Screen name="UpdateProfile" component={UpdateProfile} options={{ headerShown: true }} />
+      <YourProfileStack.Screen name="TakePhoto" component={TakePhoto} options={{headerShown: true}} />
     </YourProfileStack.Navigator>
   );
 }
