@@ -69,10 +69,6 @@ export default class ChatScreenApp extends Component {
     }
   };
 
-  editChat() {
-    console.log('chat edited test');
-  }
-
   addUserToChat() {
     console.log('user added to chat test');
   }
@@ -137,6 +133,10 @@ export default class ChatScreenApp extends Component {
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  editMessage() {
+    console.log('message edit function test');
   }
 
   async deleteMessage(messageID) {
@@ -213,11 +213,16 @@ export default class ChatScreenApp extends Component {
                           {' '}
                           {item.author.last_name}
                         </Text>
-                        <Text>{item.message}</Text>
+                        <Text style={Styles.message}>{item.message}</Text>
                       </View>
-                      <TouchableOpacity style={Styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
-                        <Text style={Styles.deleteButtonText}>Delete</Text>
-                      </TouchableOpacity>
+                      <View style={Styles.messageOptionsContainer}>
+                        <TouchableOpacity style={Styles.editMsgButton} onPress={() => this.editMessage()}>
+                          <Text style={Styles.deleteButtonText}>Edit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={Styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
+                          <Text style={Styles.deleteButtonText}>Delete</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -294,9 +299,23 @@ const Styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 5,
   },
+  message: {
+    width: '60vw',
+  },
+  messageOptionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  editMsgButton: {
+    backgroundColor: '#25D366',
+    justifyContent: 'center',
+    width: '15vw',
+    marginRight: 5,
+  },
   deleteButton: {
     backgroundColor: 'red',
     justifyContent: 'center',
+    width: '15vw',
   },
   deleteButtonText: {
     textAlign: 'center',
