@@ -77,10 +77,6 @@ export default class ChatScreenApp extends Component {
     console.log('user added to chat test');
   }
 
-  removeUserFromChat() {
-    console.log('user removed from chat test');
-  }
-
   async leaveChat() {
     const { route, navigation } = this.props;
     const { chatID, userID } = route.params;
@@ -193,7 +189,7 @@ export default class ChatScreenApp extends Component {
                   <Text style={Styles.optionButtonText}>Add User To Chat</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.removeUserFromChat()}>
+              <TouchableOpacity onPress={() => navigation.navigate('RemoveChatUser', { chatJSON: chat, chatId: chatID })}>
                 <View style={Styles.optionButton}>
                   <Text style={Styles.optionButtonText}>Remove User</Text>
                 </View>
