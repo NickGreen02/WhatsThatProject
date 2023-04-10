@@ -48,9 +48,16 @@ export default class SearchScreen extends Component {
           throw new Error('Something went wrong');
         }
       })
-      .then((rJson) => {
+      .then(async (rJson) => {
         console.log(rJson);
-        this.setState({ users: rJson });
+        let newJSON = rJson;
+        const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
+
+        // remove current logged in user from list of users
+        newJSON = newJSON.filter((obj) => parseInt(obj.user_id, 10) !== parseInt(loggedInUser, 10));
+        console.log(newJSON);
+
+        this.setState({ users: newJSON });
       })
       .catch((error) => {
         console.log(error);
