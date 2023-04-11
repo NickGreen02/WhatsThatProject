@@ -135,10 +135,6 @@ export default class ChatScreenApp extends Component {
       });
   }
 
-  editMessage() {
-    console.log('message edit function test');
-  }
-
   async deleteMessage(messageID) {
     const { route } = this.props;
     const { chatID } = route.params;
