@@ -17,6 +17,7 @@ import UpdateProfile from './components/updateProfile';
 import SearchScreen from './components/search';
 import TakePhoto from './components/takePhoto';
 import RemoveChatUser from './components/removeChatUser';
+import EditMessage from './components/editMessage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,6 +54,7 @@ function ChatNav() {
       <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
       <ChatStack.Screen name="ChatNameScreen" component={ChatNameScreen} options={{ headerShown: true }} />
       <ChatStack.Screen name="RemoveChatUser" component={RemoveChatUser} options={{ headerShown: true }} />
+      <ChatStack.Screen name="EditMessageScreen" component={EditMessage} options={{ headerShown: true }} />
     </ChatStack.Navigator>
   );
 }

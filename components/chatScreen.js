@@ -216,7 +216,7 @@ export default class ChatScreenApp extends Component {
                         <Text style={Styles.message}>{item.message}</Text>
                       </View>
                       <View style={Styles.messageOptionsContainer}>
-                        <TouchableOpacity style={Styles.editMsgButton} onPress={() => this.editMessage()}>
+                        <TouchableOpacity style={Styles.editMsgButton} onPress={() => navigation.navigate('EditMessageScreen', { messageId: item.message_id, chatId: chatID, initialMessageText: item.message })}>
                           <Text style={Styles.deleteButtonText}>Edit</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={Styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
