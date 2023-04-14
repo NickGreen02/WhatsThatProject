@@ -43,7 +43,7 @@ export default class EditMessage extends Component {
     }
   };
 
-  async editChat() {
+  async editMessage() {
     const { messagetext } = this.state;
     const { navigation, route } = this.props;
     const { chatId, messageId } = route.params;
@@ -104,7 +104,7 @@ export default class EditMessage extends Component {
             />
           </View>
           <View>
-            <TouchableOpacity onPress={() => this.editChat()}>
+            <TouchableOpacity onPress={() => this.editMessage()}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Edit message</Text>
               </View>

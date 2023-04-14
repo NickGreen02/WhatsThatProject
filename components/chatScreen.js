@@ -45,8 +45,12 @@ export default class ChatScreenApp extends Component {
         if (response.status === 200) {
           return response.json();
         } if (response.status === 401) {
-          throw new Error('Unauthorised');
-        } else if (response.status === 500) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
           throw new Error('Server error');
         } else {
           throw new Error('Something went wrong');

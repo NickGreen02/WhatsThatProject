@@ -55,6 +55,8 @@ export default class ChatNameApp extends Component {
         if (response.status === 200) {
           navigation.navigate('ChatList');
           return response.json();
+        } if (response.status === 400) {
+          throw new Error('Bad request');
         } if (response.status === 401) {
           throw new Error('Unauthorised access');
         } if (response.status === 403) {
