@@ -18,6 +18,7 @@ export default class UserProfileApp extends Component {
       this.checkLoggedIn();
     });
     this.refreshProfile = navigation.addListener('focus', () => {
+      this.get_profile_image();
       this.getData();
     });
     console.log('Data displayed');
@@ -52,6 +53,28 @@ export default class UserProfileApp extends Component {
       .then((rJson) => {
         console.log(rJson);
         this.setState({ userData: rJson });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async get_profile_image() {
+    const { route } = this.props;
+    const { user } = route.params;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/user/${user}/photo`,
+      {
+        method: 'GET',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        return response.blob();
+      })
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        this.setState({ photo: data });
       })
       .catch((error) => {
         console.log(error);
@@ -174,12 +197,15 @@ export default class UserProfileApp extends Component {
   }
 
   render() {
-    const { userData, blockCheck } = this.state;
+    const { userData, blockCheck, photo } = this.state;
     if (blockCheck) {
       return (
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
-            <Image />
+            <Image
+              source={{ uri: photo }}
+              style={{ width: '50vw', height: '20vh' }}
+            />
             <Text style={Styles.name}>
               {userData.first_name}
               {' '}
@@ -203,7 +229,10 @@ export default class UserProfileApp extends Component {
       return (
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
-            <Image />
+            <Image
+              source={{ uri: photo }}
+              style={{ width: '50vw', height: '20vh' }}
+            />
             <Text style={Styles.name}>
               {userData.first_name}
               {' '}

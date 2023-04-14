@@ -19,6 +19,7 @@ export default class YourProfileApp extends Component {
       this.checkLoggedIn();
     });
     this.refreshProfile = navigation.addListener('focus', () => {
+      this.get_profile_image();
       this.getData();
     });
     console.log('Data displayed');
@@ -27,6 +28,27 @@ export default class YourProfileApp extends Component {
   componentWillUnmount() {
     this.unsubscribe();
     this.refreshProfile();
+  }
+
+  async get_profile_image() {
+    const user = await AsyncStorage.getItem('whatsthat_user_id');
+    return fetch(
+      `http://localhost:3333/api/1.0.0/user/${user}/photo`,
+      {
+        method: 'GET',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        return response.blob();
+      })
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        this.setState({ photo: data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   async getData() {
@@ -68,11 +90,14 @@ export default class YourProfileApp extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { userData } = this.state;
+    const { userData, photo } = this.state;
     return (
       <View style={Styles.container}>
         <View style={Styles.formContainer}>
-          <Image />
+          <Image
+            source={{ uri: photo }}
+            style={{ width: '50vw', height: '20vh' }}
+          />
           <Text style={Styles.name}>
             {userData.first_name}
             {' '}
