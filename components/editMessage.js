@@ -13,7 +13,7 @@ export default class EditMessage extends Component {
       messagetext: '',
       submitted: false,
     };
-    this.editChat = this.editChat.bind(this);
+    this.editMessage = this.editMessage.bind(this);
   }
 
   componentDidMount() {
