@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-web';
+import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ChatPreview from './chatPreview';
@@ -8,7 +8,7 @@ import ChatPreview from './chatPreview';
 export default class ChatlistApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { chats: {}, user: '' };
+    this.state = { chats: {}, user: '', isLoading: true };
   }
 
   componentDidMount() {
@@ -28,6 +28,15 @@ export default class ChatlistApp extends Component {
   }
 
   async getData() {
+    const { route } = this.props;
+    try {
+      const { updateList } = route.params;
+      if (updateList === true) {
+        this.setState({ isLoading: true });
+      }
+    } catch (error) {
+      this.setState({ isLoading: false });
+    }
     return fetch(
       'http://localhost:3333/api/1.0.0/chat',
       {
@@ -48,7 +57,7 @@ export default class ChatlistApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        this.setState({ chats: rJson });
+        this.setState({ chats: rJson, isLoading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -95,36 +104,44 @@ export default class ChatlistApp extends Component {
   }
 
   render() {
-    const { chats, user } = this.state;
+    const { chats, user, isLoading } = this.state;
     const { navigation } = this.props;
 
-    return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
-          <View style={Styles.optionsContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('YourProfile')}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Your Profile</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.logout()}>
-              <View style={Styles.optionButton}>
-                <Text style={Styles.optionButtonText}>Logout</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={chats}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatID: item.chat_id, userID: user })}>
-                <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.chat_id}
-          />
+    if (isLoading) {
+      return (
+        <View style={Styles.container}>
+          <ActivityIndicator />
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <View style={Styles.optionsContainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('YourProfile')}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Your Profile</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.logout()}>
+                <View style={Styles.optionButton}>
+                  <Text style={Styles.optionButtonText}>Logout</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={chats}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { chatID: item.chat_id, userID: user })}>
+                  <ChatPreview name={item.name} creatorName={item.creator.first_name} messagePreview={item.last_message.message} />
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.chat_id}
+            />
+          </View>
+        </View>
+      );
+    }
   }
 }
 

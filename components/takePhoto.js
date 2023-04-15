@@ -35,7 +35,7 @@ export default function TakePhoto() {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'image/png',
           'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
         },
         body: blob,

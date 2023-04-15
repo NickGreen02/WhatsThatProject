@@ -79,9 +79,10 @@ export default class ChatScreenApp extends Component {
 
   async leaveChat() {
     const { route, navigation } = this.props;
-    const { chatID, userID } = route.params;
+    const { chatID } = route.params;
+    const user = await AsyncStorage.getItem('whatsthat_user_id');
     return fetch(
-      `http://localhost:3333/api/1.0.0/chat/${chatID}/user/${userID}`,
+      `http://localhost:3333/api/1.0.0/chat/${chatID}/user/${user}`,
       {
         method: 'DELETE',
         headers: {
@@ -91,7 +92,7 @@ export default class ChatScreenApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ChatList');
+          navigation.navigate('ChatList', { updateList: true });
           return response.json();
         } if (response.status === 401) {
           throw new Error('Unauthorised access');
