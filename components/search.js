@@ -83,7 +83,7 @@ export default class SearchScreen extends Component {
   };
 
   search() {
-    console.log('search function test');
+    console.log('search all users test');
   }
 
   async addContact(user, username) {

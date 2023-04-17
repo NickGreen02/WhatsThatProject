@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native-web';
+import {
+  Text, View, StyleSheet, ActivityIndicator,
+} from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ChatPreview from './chatPreview';

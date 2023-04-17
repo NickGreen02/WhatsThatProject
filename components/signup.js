@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, TextInput, View, StyleSheet,
+  Text, TextInput, View, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
@@ -9,17 +9,9 @@ export default class SignupApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
       firstname: '', surname: '', emailstate: '', passwordstate: '', errorstate: '', submitted: false,
     };
     this.signup = this.signup.bind(this);
-  }
-
-  componentDidMount() {
-    // const reset = this.props.navigation.addListener('focus', () => {
-    //   this.setState({firstname: "", surname: "", email: "", password: "", error: "", submitted: false});
-    // });
-    // return reset;
   }
 
   // signup function
@@ -74,71 +66,81 @@ export default class SignupApp extends Component {
       .then((rJson) => {
         console.log(rJson);
         this.setState({ errorstate: 'User added successfully' });
-        // eslint-disable-next-line react/no-unused-state
         this.setState({ submitted: false });
         navigation.navigate('Login');
       })
       .catch((error) => {
         this.setState({ errorstate: error });
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
       });
   }
 
   // render the page
   render() {
     const {
-      emailstate, passwordstate, firstname, surname, errorstate,
+      emailstate,
+      passwordstate,
+      firstname,
+      surname,
+      errorstate,
+      submitted,
     } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.firstname}>
-            <TextInput
-              placeholder="Enter first name"
-              onChangeText={(value) => { this.setState({ firstname: value }); }}
-              value={firstname}
-            />
-          </View>
-
-          <View style={styles.surname}>
-            <TextInput
-              placeholder="Enter surname"
-              onChangeText={(value) => { this.setState({ surname: value }); }}
-              value={surname}
-            />
-          </View>
-
-          <View style={styles.email}>
-            <TextInput
-              placeholder="Enter email"
-              onChangeText={(value) => { this.setState({ emailstate: value }); }}
-              value={emailstate}
-            />
-          </View>
-
-          <View style={styles.password}>
-            <TextInput
-              placeholder="Enter password"
-              secureTextEntry
-              onChangeText={(value) => { this.setState({ passwordstate: value }); }}
-              value={passwordstate}
-            />
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => this.signup()}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Sign up</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <>
-            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
-          </>
+    if (submitted) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.firstname}>
+              <TextInput
+                placeholder="Enter first name"
+                onChangeText={(value) => { this.setState({ firstname: value }); }}
+                value={firstname}
+              />
+            </View>
+
+            <View style={styles.surname}>
+              <TextInput
+                placeholder="Enter surname"
+                onChangeText={(value) => { this.setState({ surname: value }); }}
+                value={surname}
+              />
+            </View>
+
+            <View style={styles.email}>
+              <TextInput
+                placeholder="Enter email"
+                onChangeText={(value) => { this.setState({ emailstate: value }); }}
+                value={emailstate}
+              />
+            </View>
+
+            <View style={styles.password}>
+              <TextInput
+                placeholder="Enter password"
+                secureTextEntry
+                onChangeText={(value) => { this.setState({ passwordstate: value }); }}
+                value={passwordstate}
+              />
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => this.signup()}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Sign up</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <>
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+            </>
+          </View>
+        </View>
+      );
+    }
   }
 }
 

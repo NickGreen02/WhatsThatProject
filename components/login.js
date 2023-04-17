@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, TextInput, View, StyleSheet,
+  Text, TextInput, View, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-web';
 import * as EmailValidator from 'email-validator';
@@ -10,23 +10,15 @@ export default class LoginApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
       emailstate: 'nick.green@mmu.ac.uk', passwordstate: 'Wr3xh4m!', errorstate: '', submitted: false,
     };
     this.login = this.login.bind(this);
   }
 
-  componentDidMount() {
-    // const reset = this.props.navigation.addListener('focus', () => {
-    //   this.setState({email: '', password: '', error: '', submitted: false});
-    // });
-    // return reset;
-  }
-
   // login function
   login() {
     const { emailstate, passwordstate } = this.state;
-    // eslint-disable-next-line react/no-unused-state
+
     this.setState({ submitted: true });
 
     // validation for user data
@@ -75,8 +67,7 @@ export default class LoginApp extends Component {
           await AsyncStorage.setItem('whatsthat_user_id', rJson.id);
           await AsyncStorage.setItem('whatsthat_session_token', rJson.token);
 
-          // eslint-disable-next-line react/no-unused-state
-          this.setState({ submitted: true });
+          this.setState({ submitted: false });
 
           navigation.navigate('MainAppNav');
         } catch {
@@ -90,49 +81,62 @@ export default class LoginApp extends Component {
 
   // render the page
   render() {
-    const { emailstate, passwordstate, errorstate } = this.state;
+    const {
+      emailstate,
+      passwordstate,
+      errorstate,
+      submitted,
+    } = this.state;
     const { navigation } = this.props;
-    return (
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.email}>
-            <TextInput
-              placeholder="Enter email"
-              onChangeText={(value) => { this.setState({ emailstate: value }); }}
-              value={emailstate}
-            />
-          </View>
-
-          <View style={styles.password}>
-            <TextInput
-              placeholder="Enter password"
-              secureTextEntry
-              onChangeText={(value) => { this.setState({ passwordstate: value }); }}
-              value={passwordstate}
-            />
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => this.login()}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Login</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>No account? Sign up!</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <>
-            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
-          </>
+    if (submitted) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.email}>
+              <TextInput
+                placeholder="Enter email"
+                onChangeText={(value) => { this.setState({ emailstate: value }); }}
+                value={emailstate}
+              />
+            </View>
+
+            <View style={styles.password}>
+              <TextInput
+                placeholder="Enter password"
+                secureTextEntry
+                onChangeText={(value) => { this.setState({ passwordstate: value }); }}
+                value={passwordstate}
+              />
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => this.login()}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>No account? Sign up!</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <>
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+            </>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
