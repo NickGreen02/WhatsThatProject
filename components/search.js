@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
 } from 'react-native-web';
 
 import Contact from './contact';
@@ -17,31 +16,39 @@ export default class SearchScreen extends Component {
     super(props);
     this.state = {
       searchString: '',
+      offset: 0,
       users: {},
-      isLoading: true,
+      submitted: false,
       errorstate: '',
     };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
+    const { offset } = this.state;
     this.unsubscribe = navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
-    this.refreshUsers = navigation.addListener('focus', () => {
-      this.getData();
-    });
     console.log('Data displayed');
+    console.log(`componentDidMount offset: ${offset}`);
   }
 
   componentWillUnmount() {
     this.unsubscribe();
-    this.refreshUsers();
   }
 
-  async getData() {
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const value = await AsyncStorage.getItem('whatsthat_session_token');
+    if (value == null || value === '') {
+      navigation.navigate('Login');
+    }
+  };
+
+  async search() {
+    const { searchString, offset } = this.state;
     return fetch(
-      'http://localhost:3333/api/1.0.0/search',
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -67,23 +74,11 @@ export default class SearchScreen extends Component {
         newJSON = newJSON.filter((obj) => parseInt(obj.user_id, 10) !== parseInt(loggedInUser, 10));
         console.log(newJSON);
 
-        this.setState({ users: newJSON, isLoading: false });
+        this.setState({ users: newJSON, submitted: true });
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  checkLoggedIn = async () => {
-    const { navigation } = this.props;
-    const value = await AsyncStorage.getItem('whatsthat_session_token');
-    if (value == null || value === '') {
-      navigation.navigate('Login');
-    }
-  };
-
-  search() {
-    console.log('search all users test');
   }
 
   async addContact(user, username) {
@@ -120,20 +115,35 @@ export default class SearchScreen extends Component {
       });
   }
 
+  showMore() {
+    const { offset } = this.state;
+    console.log('adding 5 to offset, showing next page');
+    let offsetVal = offset;
+    offsetVal += 5;
+    this.setState({ offset: offsetVal });
+    console.log(`offset ${offset}`);
+    this.search();
+  }
+
+  showLess() {
+    console.log('subtracting 5 from offset, showing previous page');
+    const { offset } = this.state;
+    let offsetVal = offset;
+    offsetVal -= 5;
+    this.setState({ offset: offsetVal });
+    console.log(`offset ${offset}`);
+    this.search();
+  }
+
   render() {
     const {
       searchString,
       users,
-      isLoading,
       errorstate,
+      offset,
+      submitted,
     } = this.state;
-    if (isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
-    } else {
+    if (submitted && offset === 0) {
       return (
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
@@ -159,7 +169,7 @@ export default class SearchScreen extends Component {
                 <View style={Styles.listItemContainer}>
                   <Contact firstname={item.given_name} surname={item.family_name} />
                   <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
-                    <View style={Styles.addContactButton}>
+                    <View style={Styles.wideButton}>
                       <Text style={Styles.buttonText}>Add Contact</Text>
                     </View>
                   </TouchableOpacity>
@@ -167,6 +177,93 @@ export default class SearchScreen extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
+            <TouchableOpacity onPress={() => this.showMore()}>
+              <View style={Styles.wideButton}>
+                <Text style={Styles.buttonText}>
+                  Next page -
+                  {'>'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (submitted && offset > 0) {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
+            <View style={Styles.searchContainer}>
+              <TextInput
+                style={Styles.searchBar}
+                placeholder="Search users"
+                onChangeText={(value) => { this.setState({ searchString: value }); }}
+                value={searchString}
+              />
+              <TouchableOpacity onPress={() => this.search()}>
+                <View style={Styles.searchButton}>
+                  <Text style={Styles.buttonText}>Search</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={users}
+              renderItem={({ item }) => (
+                <View style={Styles.listItemContainer}>
+                  <Contact firstname={item.given_name} surname={item.family_name} />
+                  <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
+                    <View style={Styles.wideButton}>
+                      <Text style={Styles.buttonText}>Add Contact</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item) => item.user_id}
+            />
+            <View style={Styles.pageNavContainer}>
+              <TouchableOpacity onPress={() => this.showLess()}>
+                <View style={Styles.wideButton}>
+                  <Text style={Styles.buttonText}>
+                    {'<-'}
+                    Previous page
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.showMore()}>
+                <View style={Styles.wideButton}>
+                  <Text style={Styles.buttonText}>
+                    Next page
+                    {'->'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
+            <View style={Styles.searchContainer}>
+              <TextInput
+                style={Styles.searchBar}
+                placeholder="Search users"
+                onChangeText={(value) => { this.setState({ searchString: value }); }}
+                value={searchString}
+              />
+              <TouchableOpacity onPress={() => this.search()}>
+                <View style={Styles.searchButton}>
+                  <Text style={Styles.buttonText}>Search</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <Text>ENTER SEARCH TERM</Text>
           </View>
         </View>
       );
@@ -214,12 +311,26 @@ const Styles = StyleSheet.create({
     alignItems: 'stretch',
     margin: 5,
   },
-  addContactButton: {
+  pageNavContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  wideButton: {
     justifyContent: 'center',
     backgroundColor: '#25D366',
     marginTop: 2,
     marginBottom: 8,
     margin: 5,
+    bottom: 0,
+  },
+  navButton: {
+    justifyContent: 'center',
+    backgroundColor: '#25D366',
+    marginTop: 2,
+    marginBottom: 8,
+    margin: 5,
+    bottom: 0,
+    width: '45vw',
   },
   error: {
     color: 'red',

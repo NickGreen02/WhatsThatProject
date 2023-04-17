@@ -12,7 +12,6 @@ export default class ContactListApp extends Component {
     super(props);
     this.state = {
       searchString: '',
-      offset: 0,
       contacts: {},
       isLoading: true,
       submitted: false,
@@ -137,7 +136,7 @@ export default class ContactListApp extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                 <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Search Contacts</Text>
+                  <Text style={Styles.optionButtonText}>Search All Users</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -147,7 +146,7 @@ export default class ContactListApp extends Component {
             <View style={Styles.searchContainer}>
               <TextInput
                 style={Styles.searchBar}
-                placeholder="Search users"
+                placeholder="Search contacts"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
@@ -181,7 +180,7 @@ export default class ContactListApp extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                 <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Search Contacts</Text>
+                  <Text style={Styles.optionButtonText}>Search All Users</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -191,7 +190,7 @@ export default class ContactListApp extends Component {
             <View style={Styles.searchContainer}>
               <TextInput
                 style={Styles.searchBar}
-                placeholder="Search users"
+                placeholder="Search contacts"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
