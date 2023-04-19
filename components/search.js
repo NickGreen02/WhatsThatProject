@@ -45,10 +45,10 @@ export default class SearchScreen extends Component {
     }
   };
 
-  async search() {
+  async initialSearch() {
     const { searchString, offset } = this.state;
     return fetch(
-      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`,
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=0`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
@@ -74,7 +74,88 @@ export default class SearchScreen extends Component {
         newJSON = newJSON.filter((obj) => parseInt(obj.user_id, 10) !== parseInt(loggedInUser, 10));
         console.log(newJSON);
 
+        console.log(offset);
+        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=0`);
+
         this.setState({ users: newJSON, submitted: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async searchForward() {
+    const { searchString, offset } = this.state;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset + 5}`,
+      {
+        method: 'GET',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised');
+        } else if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then(async (rJson) => {
+        console.log(rJson);
+        let newJSON = rJson;
+        const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
+
+        // remove current logged in user from list of users
+        newJSON = newJSON.filter((obj) => parseInt(obj.user_id, 10) !== parseInt(loggedInUser, 10));
+        console.log(newJSON);
+
+        console.log(offset);
+        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`);
+
+        this.setState({ users: newJSON, submitted: true, 'offset': offset + 5 });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async searchBackward() {
+    const { searchString, offset } = this.state;
+    return fetch(
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset - 5}`,
+      {
+        method: 'GET',
+        headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
+      },
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } if (response.status === 401) {
+          throw new Error('Unauthorised');
+        } else if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then(async (rJson) => {
+        console.log(rJson);
+        let newJSON = rJson;
+        const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
+
+        // remove current logged in user from list of users
+        newJSON = newJSON.filter((obj) => parseInt(obj.user_id, 10) !== parseInt(loggedInUser, 10));
+        console.log(newJSON);
+
+        console.log(offset);
+        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`);
+
+        this.setState({ users: newJSON, submitted: true, 'offset': offset - 5  });
       })
       .catch((error) => {
         console.log(error);
@@ -101,7 +182,6 @@ export default class SearchScreen extends Component {
         }
       })
       .then((rJson) => {
-        this.setState({ isLoading: true });
         console.log(rJson);
       })
       .catch((error) => {
@@ -113,26 +193,6 @@ export default class SearchScreen extends Component {
           this.setState({ errorstate: `${username} has been added to your contacts list!` });
         }
       });
-  }
-
-  showMore() {
-    const { offset } = this.state;
-    console.log('adding 5 to offset, showing next page');
-    let offsetVal = offset;
-    offsetVal += 5;
-    this.setState({ offset: offsetVal });
-    console.log(`offset ${offset}`);
-    this.search();
-  }
-
-  showLess() {
-    console.log('subtracting 5 from offset, showing previous page');
-    const { offset } = this.state;
-    let offsetVal = offset;
-    offsetVal -= 5;
-    this.setState({ offset: offsetVal });
-    console.log(`offset ${offset}`);
-    this.search();
   }
 
   render() {
@@ -157,7 +217,7 @@ export default class SearchScreen extends Component {
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
-              <TouchableOpacity onPress={() => this.search()}>
+              <TouchableOpacity onPress={() => this.initialSearch()}>
                 <View style={Styles.searchButton}>
                   <Text style={Styles.buttonText}>Search</Text>
                 </View>
@@ -177,7 +237,8 @@ export default class SearchScreen extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
-            <TouchableOpacity onPress={() => this.showMore()}>
+            <Text>{offset}</Text>
+            <TouchableOpacity onPress={() => this.searchForward()}>
               <View style={Styles.wideButton}>
                 <Text style={Styles.buttonText}>
                   Next page -
@@ -188,7 +249,7 @@ export default class SearchScreen extends Component {
           </View>
         </View>
       );
-    } else if (submitted && offset > 0) {
+    } else if (submitted && offset !== 0) {
       return (
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
@@ -202,7 +263,7 @@ export default class SearchScreen extends Component {
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
-              <TouchableOpacity onPress={() => this.search()}>
+              <TouchableOpacity onPress={() => this.initialSearch()}>
                 <View style={Styles.searchButton}>
                   <Text style={Styles.buttonText}>Search</Text>
                 </View>
@@ -222,8 +283,9 @@ export default class SearchScreen extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
+            <Text>{offset}</Text>
             <View style={Styles.pageNavContainer}>
-              <TouchableOpacity onPress={() => this.showLess()}>
+              <TouchableOpacity onPress={() => this.searchBackward()}>
                 <View style={Styles.wideButton}>
                   <Text style={Styles.buttonText}>
                     {'<-'}
@@ -231,7 +293,7 @@ export default class SearchScreen extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.showMore()}>
+              <TouchableOpacity onPress={() => this.searchForward()}>
                 <View style={Styles.wideButton}>
                   <Text style={Styles.buttonText}>
                     Next page
@@ -257,13 +319,14 @@ export default class SearchScreen extends Component {
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
-              <TouchableOpacity onPress={() => this.search()}>
+              <TouchableOpacity onPress={() => this.initialSearch()}>
                 <View style={Styles.searchButton}>
                   <Text style={Styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <Text>ENTER SEARCH TERM</Text>
+            <Text>{offset}</Text>
           </View>
         </View>
       );
@@ -313,10 +376,10 @@ const Styles = StyleSheet.create({
   },
   pageNavContainer: {
     flexDirection: 'row',
-    alignItems: 'stretch',
   },
   wideButton: {
     justifyContent: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#25D366',
     marginTop: 2,
     marginBottom: 8,
