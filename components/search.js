@@ -114,7 +114,7 @@ export default class SearchScreen extends Component {
         console.log(newJSON);
 
         console.log(offset);
-        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`);
+        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset + 5}`);
 
         this.setState({ users: newJSON, submitted: true, 'offset': offset + 5 });
       })
@@ -153,9 +153,9 @@ export default class SearchScreen extends Component {
         console.log(newJSON);
 
         console.log(offset);
-        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset}`);
+        console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset - 5}`);
 
-        this.setState({ users: newJSON, submitted: true, 'offset': offset - 5  });
+        this.setState({ users: newJSON, submitted: true, 'offset': offset - 5 });
       })
       .catch((error) => {
         console.log(error);
