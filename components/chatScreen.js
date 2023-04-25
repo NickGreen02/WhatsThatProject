@@ -23,6 +23,10 @@ export default class ChatScreenApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
+    setInterval(() => {
+      this.getData();
+      console.log('interval refresh');
+    }, 5000);
     console.log('Data displayed');
   }
 

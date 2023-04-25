@@ -17,6 +17,7 @@ export default class SearchScreen extends Component {
     this.state = {
       searchString: '',
       offset: 0,
+      endCheck: false,
       users: {},
       submitted: false,
       errorstate: '',
@@ -85,7 +86,7 @@ export default class SearchScreen extends Component {
   }
 
   async searchForward() {
-    const { searchString, offset } = this.state;
+    const { searchString, offset, endCheck } = this.state;
     return fetch(
       `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset + 5}`,
       {
@@ -106,6 +107,11 @@ export default class SearchScreen extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        console.log('ENDCOUNT: ', Object.keys(rJson).length);
+        if (Object.keys(rJson).length % 5 !== 0) {
+          this.setState({ endCheck: true });
+        }
+        console.log('ENDCHECK: ', endCheck);
         let newJSON = rJson;
         const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
 
@@ -145,6 +151,7 @@ export default class SearchScreen extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        this.setState({ endCheck: false });
         let newJSON = rJson;
         const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
 
@@ -201,6 +208,7 @@ export default class SearchScreen extends Component {
       users,
       errorstate,
       offset,
+      endCheck,
       submitted,
     } = this.state;
     if (submitted && offset === 0) {
@@ -237,7 +245,6 @@ export default class SearchScreen extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
-            <Text>{offset}</Text>
             <TouchableOpacity onPress={() => this.searchForward()}>
               <View style={Styles.wideButton}>
                 <Text style={Styles.buttonText}>
@@ -249,7 +256,7 @@ export default class SearchScreen extends Component {
           </View>
         </View>
       );
-    } else if (submitted && offset !== 0) {
+    } else if (submitted && offset !== 0 && endCheck === false) {
       return (
         <View style={Styles.container}>
           <View style={Styles.formContainer}>
@@ -283,7 +290,6 @@ export default class SearchScreen extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
-            <Text>{offset}</Text>
             <View style={Styles.pageNavContainer}>
               <TouchableOpacity onPress={() => this.searchBackward()}>
                 <View style={Styles.wideButton}>
@@ -298,6 +304,53 @@ export default class SearchScreen extends Component {
                   <Text style={Styles.buttonText}>
                     Next page
                     {'->'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    } else if (submitted && offset !== 0 && endCheck === true) {
+      return (
+        <View style={Styles.container}>
+          <View style={Styles.formContainer}>
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
+            <View style={Styles.searchContainer}>
+              <TextInput
+                style={Styles.searchBar}
+                placeholder="Search users"
+                onChangeText={(value) => { this.setState({ searchString: value }); }}
+                value={searchString}
+              />
+              <TouchableOpacity onPress={() => this.initialSearch()}>
+                <View style={Styles.searchButton}>
+                  <Text style={Styles.buttonText}>Search</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={users}
+              renderItem={({ item }) => (
+                <View style={Styles.listItemContainer}>
+                  <Contact firstname={item.given_name} surname={item.family_name} />
+                  <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
+                    <View style={Styles.wideButton}>
+                      <Text style={Styles.buttonText}>Add Contact</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item) => item.user_id}
+            />
+            <View style={Styles.pageNavContainer}>
+              <TouchableOpacity onPress={() => this.searchBackward()}>
+                <View style={Styles.wideButton}>
+                  <Text style={Styles.buttonText}>
+                    {'<-'}
+                    Previous page
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -326,7 +379,6 @@ export default class SearchScreen extends Component {
               </TouchableOpacity>
             </View>
             <Text>ENTER SEARCH TERM</Text>
-            <Text>{offset}</Text>
           </View>
         </View>
       );

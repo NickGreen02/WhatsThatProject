@@ -42,20 +42,19 @@ export default function TakePhoto() {
       },
     )
       .then((response) => {
-        // if (response.status === 200) {
-        //   return response.json();
-        // } if (response.status === 401) {
-        //   throw new Error('Unauthorised access');
-        // } if (response.status === 403) {
-        //   throw new Error('Forbidden by server');
-        // } if (response.status === 404) {
-        //   throw new Error('Not found');
-        // } if (response.status === 500) {
-        //   throw new Error('Server error');
-        // } else {
-        //   throw new Error('Something went wrong');
-        // }
-        console.log('Picture added', response);
+        if (response.status === 200) {
+          console.log('Picture added', response);
+        } if (response.status === 401) {
+          throw new Error('Unauthorised access');
+        } if (response.status === 403) {
+          throw new Error('Forbidden by server');
+        } if (response.status === 404) {
+          throw new Error('Not found');
+        } if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
       })
       .catch((error) => {
         console.log(error);
