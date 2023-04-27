@@ -68,6 +68,10 @@ export default class SearchScreen extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        if (Object.keys(rJson).length % 5 !== 0) {
+          this.setState({ endCheck: true });
+        }
+
         let newJSON = rJson;
         const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
 
@@ -108,7 +112,7 @@ export default class SearchScreen extends Component {
       .then(async (rJson) => {
         console.log(rJson);
         console.log('ENDCOUNT: ', Object.keys(rJson).length);
-        if (Object.keys(rJson).length % 5 !== 0) {
+        if (Object.keys(rJson).length % 5 !== 0 || Object.keys(rJson).length === 0) {
           this.setState({ endCheck: true });
         }
         console.log('ENDCHECK: ', endCheck);
