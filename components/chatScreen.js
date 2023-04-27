@@ -25,7 +25,7 @@ export default class ChatScreenApp extends Component {
     });
     setInterval(() => {
       this.getData();
-      console.log('interval refresh');
+      console.log('chatscreen interval refresh');
     }, 5000);
     console.log('Data displayed');
   }

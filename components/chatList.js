@@ -21,6 +21,10 @@ export default class ChatlistApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
+    setInterval(() => {
+      this.getData();
+      console.log('chatlist interval refresh');
+    }, 5000);
     console.log('Data displayed');
   }
 
