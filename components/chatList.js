@@ -10,7 +10,12 @@ import ChatPreview from './chatPreview';
 export default class ChatlistApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { chats: {}, user: '', isLoading: true };
+    this.state = {
+      chats: {},
+      user: '',
+      isLoading: true,
+      interval: null,
+    };
   }
 
   componentDidMount() {
@@ -21,16 +26,19 @@ export default class ChatlistApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
-    setInterval(() => {
+    const intervalRefresh = setInterval(() => {
       this.getData();
       console.log('chatlist interval refresh');
     }, 5000);
+    this.setState({ interval: intervalRefresh });
     console.log('Data displayed');
   }
 
   componentWillUnmount() {
+    const { interval } = this.state;
     this.unsubscribe();
     this.refreshChats();
+    clearInterval(interval);
   }
 
   async getData() {

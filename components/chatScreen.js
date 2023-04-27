@@ -12,6 +12,7 @@ export default class ChatScreenApp extends Component {
       chat: {},
       messageToSend: '',
       isLoading: true,
+      interval: null,
     };
   }
 
@@ -23,16 +24,19 @@ export default class ChatScreenApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
-    setInterval(() => {
+    const intervalRefresh = setInterval(() => {
       this.getData();
       console.log('chatscreen interval refresh');
     }, 5000);
+    this.setState({ interval: intervalRefresh });
     console.log('Data displayed');
   }
 
   componentWillUnmount() {
+    const { interval } = this.state;
     this.unsubscribe();
     this.refreshChats();
+    clearInterval(interval);
   }
 
   async getData() {
@@ -76,10 +80,6 @@ export default class ChatScreenApp extends Component {
       navigation.navigate('Login');
     }
   };
-
-  addUserToChat() {
-    console.log('user added to chat test');
-  }
 
   async leaveChat() {
     const { route, navigation } = this.props;
@@ -189,7 +189,7 @@ export default class ChatScreenApp extends Component {
                   <Text style={Styles.optionButtonText}>Edit Chat Name</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.addUserToChat()}>
+              <TouchableOpacity onPress={() => navigation.navigate('AddChatUser', { chatJSON: chat, chatId: chatID })}>
                 <View style={Styles.optionButton}>
                   <Text style={Styles.optionButtonText}>Add User To Chat</Text>
                 </View>
