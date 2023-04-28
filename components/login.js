@@ -88,10 +88,52 @@ export default class LoginApp extends Component {
       submitted,
     } = this.state;
     const { navigation } = this.props;
-    if (submitted) {
+    if (submitted && errorstate === '') {
       return (
         <View style={styles.container}>
           <ActivityIndicator />
+        </View>
+      );
+    } else if (submitted && errorstate !== '') {
+      return (
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.email}>
+              <TextInput
+                placeholder="Enter email"
+                onChangeText={(value) => { this.setState({ emailstate: value }); }}
+                value={emailstate}
+              />
+            </View>
+
+            <View style={styles.password}>
+              <TextInput
+                placeholder="Enter password"
+                secureTextEntry
+                onChangeText={(value) => { this.setState({ passwordstate: value }); }}
+                value={passwordstate}
+              />
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => this.login()}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>No account? Sign up!</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <>
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+            </>
+          </View>
         </View>
       );
     } else {

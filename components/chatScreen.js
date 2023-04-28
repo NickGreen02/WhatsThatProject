@@ -215,6 +215,9 @@ export default class ChatScreenApp extends Component {
                 </View>
               </TouchableOpacity>
             </View>
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
             <View style={Styles.listContainer}>
               <FlatList
                 data={chat.messages}
@@ -243,9 +246,6 @@ export default class ChatScreenApp extends Component {
                 )}
                 keyExtractor={(item) => item.message_id}
               />
-              <>
-                {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
-              </>
             </View>
           </View>
           <View style={Styles.sendContainer}>
@@ -259,9 +259,6 @@ export default class ChatScreenApp extends Component {
             <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
               <Text style={Styles.buttonText}>Send</Text>
             </TouchableOpacity>
-            <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
-            </>
           </View>
         </View>
       );

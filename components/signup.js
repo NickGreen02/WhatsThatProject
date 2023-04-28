@@ -23,6 +23,10 @@ export default class SignupApp extends Component {
     this.setState({ submitted: true });
 
     // validation for user data
+    if (!(firstname && surname)) {
+      this.setState({ errorstate: 'Please enter a first name and a surname.' });
+      return;
+    }
     if (!(emailstate && passwordstate)) {
       this.setState({ errorstate: 'Please enter an email and a password.' });
       return;
@@ -84,10 +88,60 @@ export default class SignupApp extends Component {
       errorstate,
       submitted,
     } = this.state;
-    if (submitted) {
+    if (submitted && errorstate === '') {
       return (
         <View style={styles.container}>
           <ActivityIndicator />
+        </View>
+      );
+    } else if (submitted && errorstate !== '') {
+      return (
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.firstname}>
+              <TextInput
+                placeholder="Enter first name"
+                onChangeText={(value) => { this.setState({ firstname: value }); }}
+                value={firstname}
+              />
+            </View>
+
+            <View style={styles.surname}>
+              <TextInput
+                placeholder="Enter surname"
+                onChangeText={(value) => { this.setState({ surname: value }); }}
+                value={surname}
+              />
+            </View>
+
+            <View style={styles.email}>
+              <TextInput
+                placeholder="Enter email"
+                onChangeText={(value) => { this.setState({ emailstate: value }); }}
+                value={emailstate}
+              />
+            </View>
+
+            <View style={styles.password}>
+              <TextInput
+                placeholder="Enter password"
+                secureTextEntry
+                onChangeText={(value) => { this.setState({ passwordstate: value }); }}
+                value={passwordstate}
+              />
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={() => this.signup()}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Sign up</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <>
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+            </>
+          </View>
         </View>
       );
     } else {
