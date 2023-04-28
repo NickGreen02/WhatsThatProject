@@ -68,16 +68,16 @@ export default function TakePhoto() {
     return (<Text>No access to camera</Text>);
   } else {
     return (
-      <View style={Styles.container}>
+      <View style={styles.container}>
         <Camera type={type} ref={(ref) => setCamera(ref)}>
-          <View style={Styles.buttonContainer}>
-            <TouchableOpacity style={Styles.button} onPress={toggleCameraType}>
-              <Text style={Styles.text}>Flip Camera</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+              <Text style={styles.text}>Flip Camera</Text>
             </TouchableOpacity>
           </View>
-          <View style={Styles.buttonContainer}>
-            <TouchableOpacity style={Styles.button} onPress={takePhoto}>
-              <Text style={Styles.text}>Take Photo</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={takePhoto}>
+              <Text style={styles.text}>Take Photo</Text>
             </TouchableOpacity>
           </View>
         </Camera>
@@ -86,7 +86,7 @@ export default function TakePhoto() {
   }
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

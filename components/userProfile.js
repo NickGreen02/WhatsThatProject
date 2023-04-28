@@ -200,30 +200,30 @@ export default class UserProfileApp extends Component {
     const { userData, blockCheck, photo } = this.state;
     if (blockCheck) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <Image
               source={{ uri: photo }}
               style={{ width: '50vw', height: '20vh' }}
             />
-            <Text style={Styles.name}>
+            <Text style={styles.name}>
               {userData.first_name}
               {' '}
               {userData.last_name}
             </Text>
-            <Text style={Styles.email}>{userData.email}</Text>
-            <Text style={Styles.email}>
+            <Text style={styles.email}>{userData.email}</Text>
+            <Text style={styles.email}>
               {'User ID: '}
               {userData.user_id}
             </Text>
             <TouchableOpacity onPress={() => this.removeContact()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Remove Contact</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Remove Contact</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.unblockContact()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Unblock Contact</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Unblock Contact</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -231,30 +231,30 @@ export default class UserProfileApp extends Component {
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <Image
               source={{ uri: photo }}
               style={{ width: '50vw', height: '20vh' }}
             />
-            <Text style={Styles.name}>
+            <Text style={styles.name}>
               {userData.first_name}
               {' '}
               {userData.last_name}
             </Text>
-            <Text style={Styles.email}>{userData.email}</Text>
-            <Text style={Styles.email}>
+            <Text style={styles.email}>{userData.email}</Text>
+            <Text style={styles.email}>
               {'User ID: '}
               {userData.user_id}
             </Text>
             <TouchableOpacity onPress={() => this.removeContact()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Remove Contact</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Remove Contact</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.blockContact()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Block Contact</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Block Contact</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -265,7 +265,7 @@ export default class UserProfileApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

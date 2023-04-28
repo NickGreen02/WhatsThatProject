@@ -5,14 +5,14 @@ export default class ChatPreview extends Component {
   render() {
     const { creatorName, messagePreview, name } = this.props;
     return (
-      <View style={Styles.chatBorder}>
-        <Text style={Styles.title}>{name}</Text>
-        <Text style={Styles.creator}>
+      <View style={styles.chatBorder}>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.creator}>
           Creator:
           {' '}
           {creatorName}
         </Text>
-        <Text style={Styles.lastMessage}>
+        <Text style={styles.lastMessage}>
           Last message:
           {' '}
           {messagePreview}
@@ -22,7 +22,7 @@ export default class ChatPreview extends Component {
   }
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   chatBorder: {
     borderLeftWidth: 'thin',
     borderRightWidth: 'thin',

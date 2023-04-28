@@ -121,23 +121,23 @@ export default class ChatlistApp extends Component {
 
     if (isLoading) {
       return (
-        <View style={Styles.container}>
+        <View style={styles.container}>
           <ActivityIndicator />
         </View>
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
-            <View style={Styles.optionsContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.optionsContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('YourProfile')}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Your Profile</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Your Profile</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.logout()}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Logout</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Logout</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -158,7 +158,7 @@ export default class ChatlistApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

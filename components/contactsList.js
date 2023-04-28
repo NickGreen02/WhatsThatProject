@@ -126,33 +126,33 @@ export default class ContactListApp extends Component {
       );
     } else if (!submitted && !isLoading) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
-            <View style={Styles.optionsContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.optionsContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('Blocked')}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Blocked Users</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Blocked Users</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Search All Users</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Search All Users</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search contacts"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.search()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -170,33 +170,33 @@ export default class ContactListApp extends Component {
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
-            <View style={Styles.optionsContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.optionsContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('Blocked')}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Blocked Users</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Blocked Users</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Search All Users</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Search All Users</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search contacts"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.search()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -217,7 +217,7 @@ export default class ContactListApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

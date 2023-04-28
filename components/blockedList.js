@@ -67,8 +67,8 @@ export default class ContactListApp extends Component {
     const { blocked } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
           <FlatList
             data={blocked}
             renderItem={({ item }) => (
@@ -85,7 +85,7 @@ export default class ContactListApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

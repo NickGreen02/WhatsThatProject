@@ -71,24 +71,24 @@ export default class CreateChatApp extends Component {
   render() {
     const { errorstate } = this.state;
     return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
-          <View style={Styles.inputContainer}>
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
             <TextInput
-              style={Styles.name}
+              style={styles.name}
               placeholder="Enter chat name"
               onChangeText={(value) => { this.setState({ chatname: value }); }}
             />
           </View>
           <View>
             <TouchableOpacity onPress={() => this.createChat()}>
-              <View style={Styles.button}>
-                <Text style={Styles.buttonText}>Create new chat</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Create new chat</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+          {errorstate && <Text style={styles.error}>{errorstate}</Text>}
 
         </View>
       </View>
@@ -96,7 +96,7 @@ export default class CreateChatApp extends Component {
   }
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

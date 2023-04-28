@@ -5,8 +5,8 @@ export default class Contact extends Component {
   render() {
     const { firstname, surname } = this.props;
     return (
-      <View style={Styles.contactBorder}>
-        <Text style={Styles.name}>
+      <View style={styles.contactBorder}>
+        <Text style={styles.name}>
           {firstname}
           {' '}
           {surname}
@@ -16,7 +16,7 @@ export default class Contact extends Component {
   }
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   contactBorder: {
     borderLeftWidth: 'thin',
     borderRightWidth: 'thin',

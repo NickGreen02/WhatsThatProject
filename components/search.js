@@ -220,32 +220,32 @@ export default class SearchScreen extends Component {
     } = this.state;
     if (submitted && offset === 0) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search users"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.initialSearch()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <FlatList
               data={users}
               renderItem={({ item }) => (
-                <View style={Styles.listItemContainer}>
+                <View style={styles.listItemContainer}>
                   <Contact firstname={item.given_name} surname={item.family_name} />
                   <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
-                    <View style={Styles.wideButton}>
-                      <Text style={Styles.buttonText}>Add Contact</Text>
+                    <View style={styles.wideButton}>
+                      <Text style={styles.buttonText}>Add Contact</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -253,8 +253,8 @@ export default class SearchScreen extends Component {
               keyExtractor={(item) => item.user_id}
             />
             <TouchableOpacity onPress={() => this.searchForward()}>
-              <View style={Styles.wideButton}>
-                <Text style={Styles.buttonText}>
+              <View style={styles.wideButton}>
+                <Text style={styles.buttonText}>
                   Next page -
                   {'>'}
                 </Text>
@@ -265,50 +265,50 @@ export default class SearchScreen extends Component {
       );
     } else if (submitted && offset !== 0 && endCheck === false) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search users"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.initialSearch()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <FlatList
               data={users}
               renderItem={({ item }) => (
-                <View style={Styles.listItemContainer}>
+                <View style={styles.listItemContainer}>
                   <Contact firstname={item.given_name} surname={item.family_name} />
                   <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
-                    <View style={Styles.wideButton}>
-                      <Text style={Styles.buttonText}>Add Contact</Text>
+                    <View style={styles.wideButton}>
+                      <Text style={styles.buttonText}>Add Contact</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
               )}
               keyExtractor={(item) => item.user_id}
             />
-            <View style={Styles.pageNavContainer}>
+            <View style={styles.pageNavContainer}>
               <TouchableOpacity onPress={() => this.searchBackward()}>
-                <View style={Styles.wideButton}>
-                  <Text style={Styles.buttonText}>
+                <View style={styles.wideButton}>
+                  <Text style={styles.buttonText}>
                     {'<-'}
                     Previous page
                   </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.searchForward()}>
-                <View style={Styles.wideButton}>
-                  <Text style={Styles.buttonText}>
+                <View style={styles.wideButton}>
+                  <Text style={styles.buttonText}>
                     Next page
                     {'->'}
                   </Text>
@@ -320,42 +320,42 @@ export default class SearchScreen extends Component {
       );
     } else if (submitted && offset !== 0 && endCheck === true) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search users"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.initialSearch()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <FlatList
               data={users}
               renderItem={({ item }) => (
-                <View style={Styles.listItemContainer}>
+                <View style={styles.listItemContainer}>
                   <Contact firstname={item.given_name} surname={item.family_name} />
                   <TouchableOpacity onPress={() => this.addContact(item.user_id, `${item.given_name} ${item.family_name}`)}>
-                    <View style={Styles.wideButton}>
-                      <Text style={Styles.buttonText}>Add Contact</Text>
+                    <View style={styles.wideButton}>
+                      <Text style={styles.buttonText}>Add Contact</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
               )}
               keyExtractor={(item) => item.user_id}
             />
-            <View style={Styles.pageNavContainer}>
+            <View style={styles.pageNavContainer}>
               <TouchableOpacity onPress={() => this.searchBackward()}>
-                <View style={Styles.wideButton}>
-                  <Text style={Styles.buttonText}>
+                <View style={styles.wideButton}>
+                  <Text style={styles.buttonText}>
                     {'<-'}
                     Previous page
                   </Text>
@@ -367,21 +367,21 @@ export default class SearchScreen extends Component {
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.searchContainer}>
+            <View style={styles.searchContainer}>
               <TextInput
-                style={Styles.searchBar}
+                style={styles.searchBar}
                 placeholder="Search users"
                 onChangeText={(value) => { this.setState({ searchString: value }); }}
                 value={searchString}
               />
               <TouchableOpacity onPress={() => this.initialSearch()}>
-                <View style={Styles.searchButton}>
-                  <Text style={Styles.buttonText}>Search</Text>
+                <View style={styles.searchButton}>
+                  <Text style={styles.buttonText}>Search</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -393,7 +393,7 @@ export default class SearchScreen extends Component {
   }
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

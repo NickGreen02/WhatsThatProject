@@ -109,16 +109,16 @@ export default class AddChatUser extends Component {
     const { contacts, isLoading, errorstate } = this.state;
     if (isLoading) {
       return (
-        <View style={Styles.container}>
+        <View style={styles.container}>
           <ActivityIndicator />
         </View>
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
             <FlatList
               data={contacts}
@@ -126,8 +126,8 @@ export default class AddChatUser extends Component {
                 <View>
                   <Contact firstname={item.first_name} surname={item.last_name} />
                   <TouchableOpacity onPress={() => this.addMember(item.user_id, `${item.first_name} ${item.last_name}`)}>
-                    <View style={Styles.addMemberButton}>
-                      <Text style={Styles.buttonText}>Add User</Text>
+                    <View style={styles.addMemberButton}>
+                      <Text style={styles.buttonText}>Add User</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -142,7 +142,7 @@ export default class AddChatUser extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

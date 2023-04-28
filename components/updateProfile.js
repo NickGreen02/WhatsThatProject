@@ -133,46 +133,46 @@ export default class UpdateProfile extends Component {
     } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
-          <View style={Styles.updateUserContainer}>
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <View style={styles.updateUserContainer}>
             <TextInput
-              style={Styles.updateInput}
+              style={styles.updateInput}
               placeholder="Change your first name"
               onChangeText={(value) => { this.setState({ firstnamechange: value }); }}
               value={firstnamechange}
             />
             <TextInput
-              style={Styles.updateInput}
+              style={styles.updateInput}
               placeholder="Change your last name"
               onChangeText={(value) => { this.setState({ lastnamechange: value }); }}
               value={lastnamechange}
             />
             <TextInput
-              style={Styles.updateInput}
+              style={styles.updateInput}
               placeholder="Change your password"
               onChangeText={(value) => { this.setState({ passwordchange: value }); }}
               value={passwordchange}
             />
             <TextInput
-              style={Styles.updateInput}
+              style={styles.updateInput}
               placeholder="Change your email address"
               onChangeText={(value) => { this.setState({ emailchange: value }); }}
               value={emailchange}
             />
             <TouchableOpacity onPress={() => this.updateInfo()}>
-              <View style={Styles.updateButton}>
-                <Text style={Styles.buttonText}>Update Profile</Text>
+              <View style={styles.updateButton}>
+                <Text style={styles.buttonText}>Update Profile</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('TakePhoto')}>
-              <View style={Styles.updateButton}>
-                <Text style={Styles.buttonText}>Add Profile Photo</Text>
+              <View style={styles.updateButton}>
+                <Text style={styles.buttonText}>Add Profile Photo</Text>
               </View>
             </TouchableOpacity>
           </View>
           <>
-            {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
           </>
         </View>
       </View>
@@ -181,7 +181,7 @@ export default class UpdateProfile extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

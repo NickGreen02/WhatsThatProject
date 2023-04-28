@@ -183,62 +183,62 @@ export default class ChatScreenApp extends Component {
     console.log(userID);
     if (isLoading) {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
             <ActivityIndicator />
           </View>
         </View>
       );
     } else {
       return (
-        <View style={Styles.container}>
-          <View style={Styles.formContainer}>
-            <View style={Styles.optionsContainer}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.optionsContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('ChatNameScreen', { chatId: chatID })}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Edit Chat Name</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Edit Chat Name</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('AddChatUser', { chatJSON: chat, chatId: chatID })}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Add User To Chat</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Add User To Chat</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('RemoveChatUser', { chatJSON: chat, chatId: chatID })}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Remove User</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Remove User</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.leaveChat()}>
-                <View style={Styles.optionButton}>
-                  <Text style={Styles.optionButtonText}>Leave Chat</Text>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>Leave Chat</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <>
-              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
-            <View style={Styles.listContainer}>
+            <View style={styles.listContainer}>
               <FlatList
                 data={chat.messages}
                 inverted
                 renderItem={({ item }) => (
-                  <View style={Styles.messageBubble}>
-                    <View style={Styles.messageContainer}>
-                      <View style={Styles.messageTextContainer}>
-                        <Text style={Styles.messageAuthorText}>
+                  <View style={styles.messageBubble}>
+                    <View style={styles.messageContainer}>
+                      <View style={styles.messageTextContainer}>
+                        <Text style={styles.messageAuthorText}>
                           {item.author.first_name}
                           {' '}
                           {item.author.last_name}
                         </Text>
-                        <Text style={Styles.message}>{item.message}</Text>
+                        <Text style={styles.message}>{item.message}</Text>
                       </View>
-                      <View style={Styles.messageOptionsContainer}>
-                        <TouchableOpacity style={Styles.editMsgButton} onPress={() => navigation.navigate('EditMessageScreen', { messageId: item.message_id, chatId: chatID, initialMessageText: item.message })}>
-                          <Text style={Styles.deleteButtonText}>Edit</Text>
+                      <View style={styles.messageOptionsContainer}>
+                        <TouchableOpacity style={styles.editMsgButton} onPress={() => navigation.navigate('EditMessageScreen', { messageId: item.message_id, chatId: chatID, initialMessageText: item.message })}>
+                          <Text style={styles.deleteButtonText}>Edit</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
-                          <Text style={Styles.deleteButtonText}>Delete</Text>
+                        <TouchableOpacity style={styles.deleteButton} onPress={() => this.deleteMessage(item.message_id)}>
+                          <Text style={styles.deleteButtonText}>Delete</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -248,16 +248,16 @@ export default class ChatScreenApp extends Component {
               />
             </View>
           </View>
-          <View style={Styles.sendContainer}>
+          <View style={styles.sendContainer}>
             <TextInput
-              style={Styles.sendMessage}
+              style={styles.sendMessage}
               placeholder="Send a message..."
               onChangeText={(value) => { this.setState({ messageToSend: value }); }}
               defaultValue={messageToSend}
               multiline
             />
-            <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
-              <Text style={Styles.buttonText}>Send</Text>
+            <TouchableOpacity style={styles.sendButton} onPress={() => this.send(messageToSend)}>
+              <Text style={styles.buttonText}>Send</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -267,7 +267,7 @@ export default class ChatScreenApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',

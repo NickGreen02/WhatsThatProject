@@ -92,21 +92,21 @@ export default class YourProfileApp extends Component {
     const { navigation } = this.props;
     const { userData, photo } = this.state;
     return (
-      <View style={Styles.container}>
-        <View style={Styles.formContainer}>
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
           <Image
             source={{ uri: photo }}
             style={{ width: '50vw', height: '20vh' }}
           />
-          <Text style={Styles.name}>
+          <Text style={styles.name}>
             {userData.first_name}
             {' '}
             {userData.last_name}
           </Text>
-          <Text style={Styles.email}>{userData.email}</Text>
+          <Text style={styles.email}>{userData.email}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('UpdateProfile', { data: userData })}>
-            <View style={Styles.updateButton}>
-              <Text style={Styles.buttonText}>Update Your Profile</Text>
+            <View style={styles.updateButton}>
+              <Text style={styles.buttonText}>Update Your Profile</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -116,7 +116,7 @@ export default class YourProfileApp extends Component {
 }
 
 // stylesheet for the page
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
