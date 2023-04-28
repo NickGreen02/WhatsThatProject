@@ -5,12 +5,13 @@ import {
 import { Camera, CameraType } from 'expo-camera';
 import { TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TakePhoto() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [camera, setCamera] = useState(null);
-  const [errorstate, setErrorstate] = useState('');
+  const navigation = useNavigation();
 
   function toggleCameraType() {
     setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -45,6 +46,7 @@ export default function TakePhoto() {
       .then((response) => {
         if (response.status === 200) {
           console.log('Picture added', response);
+          navigation.navigate('YourProfile');
         } if (response.status === 401) {
           throw new Error('Unauthorised access');
         } if (response.status === 403) {
@@ -59,7 +61,6 @@ export default function TakePhoto() {
       })
       .catch((error) => {
         console.log(error);
-        setErrorstate(error);
       });
   }
 
@@ -68,9 +69,6 @@ export default function TakePhoto() {
   } else {
     return (
       <View style={Styles.container}>
-        <>
-          {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
-        </>
         <Camera type={type} ref={(ref) => setCamera(ref)}>
           <View style={Styles.buttonContainer}>
             <TouchableOpacity style={Styles.button} onPress={toggleCameraType}>
