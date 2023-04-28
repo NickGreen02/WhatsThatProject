@@ -13,6 +13,7 @@ export default class ChatScreenApp extends Component {
       messageToSend: '',
       isLoading: true,
       interval: null,
+      errorstate: '',
     };
   }
 
@@ -70,6 +71,7 @@ export default class ChatScreenApp extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
@@ -115,6 +117,7 @@ export default class ChatScreenApp extends Component {
       })
       .catch((error) => {
         console.error(error);
+        this.setState({ errorstate: error });
       });
   }
 
@@ -141,6 +144,7 @@ export default class ChatScreenApp extends Component {
       })
       .catch((error) => {
         console.error(error);
+        this.setState({ errorstate: error });
       });
   }
 
@@ -163,11 +167,17 @@ export default class ChatScreenApp extends Component {
       })
       .catch((error) => {
         console.error(error);
+        this.setState({ errorstate: error });
       });
   }
 
   render() {
-    const { chat, messageToSend, isLoading } = this.state;
+    const {
+      chat,
+      messageToSend,
+      isLoading,
+      errorstate,
+    } = this.state;
     const { route, navigation } = this.props;
     const { userID, chatID } = route.params;
     console.log(userID);
@@ -233,6 +243,9 @@ export default class ChatScreenApp extends Component {
                 )}
                 keyExtractor={(item) => item.message_id}
               />
+              <>
+                {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+              </>
             </View>
           </View>
           <View style={Styles.sendContainer}>
@@ -246,6 +259,9 @@ export default class ChatScreenApp extends Component {
             <TouchableOpacity style={Styles.sendButton} onPress={() => this.send(messageToSend)}>
               <Text style={Styles.buttonText}>Send</Text>
             </TouchableOpacity>
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
           </View>
         </View>
       );

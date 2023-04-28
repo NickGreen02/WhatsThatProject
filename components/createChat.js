@@ -8,8 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class CreateChatApp extends Component {
   constructor(props) {
     super(props);
-    // eslint-disable-next-line react/no-unused-state
-    this.state = { chatname: '', error: '', submitted: false };
+    this.state = { chatname: '', errorstate: '' };
     this.createChat = this.createChat.bind(this);
   }
 
@@ -35,8 +34,6 @@ export default class CreateChatApp extends Component {
   async createChat() {
     const { chatname } = this.state;
     const { navigation } = this.props;
-    // eslint-disable-next-line react/no-unused-state
-    this.setState({ submitted: true });
 
     // contact the API
     return fetch(
@@ -62,17 +59,12 @@ export default class CreateChatApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ error: 'New chat created' });
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
+        this.setState({ errorstate: 'New chat created' });
         navigation.navigate('Chats');
       })
       .catch((error) => {
         // eslint-disable-next-line quote-props, react/no-unused-state
         this.setState({ 'error': error });
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
       });
   }
 
@@ -85,7 +77,6 @@ export default class CreateChatApp extends Component {
             <TextInput
               style={Styles.name}
               placeholder="Enter chat name"
-              // eslint-disable-next-line react/no-unused-state
               onChangeText={(value) => { this.setState({ chatname: value }); }}
             />
           </View>

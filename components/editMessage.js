@@ -9,9 +9,10 @@ export default class EditMessage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // eslint-disable-next-line react/no-unused-state
       initialMessage: '',
       messagetext: '',
-      submitted: false,
+      errorstate: '',
     };
     this.editMessage = this.editMessage.bind(this);
   }
@@ -47,8 +48,6 @@ export default class EditMessage extends Component {
     const { messagetext } = this.state;
     const { navigation, route } = this.props;
     const { chatId, messageId } = route.params;
-    // eslint-disable-next-line react/no-unused-state
-    this.setState({ submitted: true });
 
     // contact the API
     return fetch(
@@ -79,19 +78,17 @@ export default class EditMessage extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
       })
       .catch((error) => {
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
   render() {
     const { route } = this.props;
     const { initialMessageText } = route.params;
+    const { errorstate } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.formContainer}>
@@ -110,6 +107,9 @@ export default class EditMessage extends Component {
               </View>
             </TouchableOpacity>
           </View>
+          <>
+            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+          </>
         </View>
       </View>
     );

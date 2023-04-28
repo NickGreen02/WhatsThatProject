@@ -86,6 +86,7 @@ export default class SearchScreen extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
@@ -130,6 +131,7 @@ export default class SearchScreen extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
@@ -170,6 +172,7 @@ export default class SearchScreen extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 

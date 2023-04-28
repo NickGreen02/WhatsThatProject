@@ -8,7 +8,7 @@ import Contact from './contact';
 export default class RemoveChatUser extends Component {
   constructor(props) {
     super(props);
-    this.state = { members: {}, isLoading: false };
+    this.state = { members: {}, isLoading: false, errorstate: '' };
   }
 
   componentDidMount() {
@@ -83,11 +83,12 @@ export default class RemoveChatUser extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
   render() {
-    const { members, isLoading } = this.state;
+    const { members, isLoading, errorstate } = this.state;
     if (isLoading) {
       return (
         <View style={Styles.container}>
@@ -112,6 +113,9 @@ export default class RemoveChatUser extends Component {
               )}
               keyExtractor={(item) => item.user_id}
             />
+            <>
+              {errorstate && <Text style={Styles.error}>{errorstate}</Text>}
+            </>
           </View>
         </View>
       );

@@ -8,8 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class ChatNameApp extends Component {
   constructor(props) {
     super(props);
-    // eslint-disable-next-line react/no-unused-state
-    this.state = { chatname: '', submitted: false };
+    this.state = { chatname: '', errorstate: '' };
     this.editChat = this.editChat.bind(this);
   }
 
@@ -37,8 +36,6 @@ export default class ChatNameApp extends Component {
     const { chatname } = this.state;
     const { navigation, route } = this.props;
     const { chatId } = route.params;
-    // eslint-disable-next-line react/no-unused-state
-    this.setState({ submitted: true });
 
     // contact the API
     return fetch(
@@ -71,18 +68,16 @@ export default class ChatNameApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
         navigation.navigate('ChatList');
       })
       .catch((error) => {
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 
   render() {
+    const { errorstate } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.formContainer}>
@@ -100,6 +95,9 @@ export default class ChatNameApp extends Component {
               </View>
             </TouchableOpacity>
           </View>
+          <>
+            {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+          </>
         </View>
       </View>
     );

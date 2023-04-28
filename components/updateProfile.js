@@ -119,6 +119,7 @@ export default class UpdateProfile extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ errorstate: error });
       });
   }
 

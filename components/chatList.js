@@ -112,8 +112,6 @@ export default class ChatlistApp extends Component {
       })
       .catch((error) => {
         console.log(error);
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ submitted: false });
       });
   }
 
