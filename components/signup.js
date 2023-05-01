@@ -42,7 +42,6 @@ export default class SignupApp extends Component {
 
     const { navigation } = this.props;
     // post request for signup sending user data from state as body
-    // eslint-disable-next-line consistent-return
     return fetch(
       'http://localhost:3333/api/1.0.0/user',
       {

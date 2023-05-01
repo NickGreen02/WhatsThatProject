@@ -39,7 +39,6 @@ export default class LoginApp extends Component {
 
     const { navigation } = this.props;
     // post request to try login, sending emailstate and passwordstate from state as body
-    // eslint-disable-next-line consistent-return
     return fetch(
       'http://localhost:3333/api/1.0.0/login',
       {

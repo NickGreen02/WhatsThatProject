@@ -27,6 +27,10 @@
         "react/prop-types": 0,
         "no-else-return": 0,
         "dot-notation": 0,
-        "quote-props": 0
+        "quote-props": 0,
+        "consistent-return": 0,
+        "react/jsx-no-bind": 0,
+        "prefer-const": 0,
+        "arrow-body-style": 0
     }
 }
