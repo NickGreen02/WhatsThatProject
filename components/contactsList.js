@@ -5,6 +5,7 @@ import {
 import { TextInput, FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import contact component for displaying contacts
 import Contact from './contact';
 
 export default class ContactListApp extends Component {
@@ -35,6 +36,7 @@ export default class ContactListApp extends Component {
     this.refreshContacts();
   }
 
+  // get list of contacts
   async getData() {
     this.setState({ submitted: false });
     return fetch(
@@ -64,6 +66,7 @@ export default class ContactListApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -72,11 +75,13 @@ export default class ContactListApp extends Component {
     }
   };
 
+  // contacts search function
   async search() {
     const { searchString, offset } = this.state;
     this.setState({ submitted: true });
+    // search only from contacts
     return fetch(
-      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=contacts&limit=20&offset=${offset}`,
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=contacts&offset=${offset}`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },

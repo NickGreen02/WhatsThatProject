@@ -25,6 +25,7 @@ export default class ChatScreenApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
+    // refresh the chat every 5 seconds so that any new message shows
     const intervalRefresh = setInterval(() => {
       this.getData();
       console.log('chatscreen interval refresh');
@@ -37,10 +38,13 @@ export default class ChatScreenApp extends Component {
     const { interval } = this.state;
     this.unsubscribe();
     this.refreshChats();
+    // stop the refreshing
     clearInterval(interval);
   }
 
+  // get the chat data
   async getData() {
+    // get which chat id to request data of, from navigation params
     const { route } = this.props;
     const { chatID } = route.params;
     return fetch(
@@ -75,6 +79,7 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -83,7 +88,9 @@ export default class ChatScreenApp extends Component {
     }
   };
 
+  // leave chat function - remove logged in user from chat
   async leaveChat() {
+    // get chat id from navigation params and user id from asyncstorarge
     const { route, navigation } = this.props;
     const { chatID } = route.params;
     const user = await AsyncStorage.getItem('whatsthat_user_id');
@@ -98,6 +105,7 @@ export default class ChatScreenApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
+          // navigate to chat list once left chat with updateList param set to true to update chat list
           navigation.navigate('ChatList', { updateList: true });
           return response.json();
         } if (response.status === 401) {
@@ -121,9 +129,11 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  // send message function
   async send(messageText) {
     const { route } = this.props;
     const { chatID } = route.params;
+    // send message request with message text from state sent as body
     return fetch(
       `http://localhost:3333/api/1.0.0/chat/${chatID}/message`,
       {
@@ -139,6 +149,7 @@ export default class ChatScreenApp extends Component {
     )
       .then((rJson) => {
         console.log(rJson);
+        // set message to send to empty string so textinput is cleared after message sent
         this.setState({ isLoading: true, messageToSend: '' });
         this.getData();
       })
@@ -148,6 +159,7 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  // delete message function
   async deleteMessage(messageID) {
     const { route } = this.props;
     const { chatID } = route.params;
@@ -171,6 +183,7 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  // render chat screen with messages, textinput and option buttons
   render() {
     const {
       chat,
@@ -194,6 +207,7 @@ export default class ChatScreenApp extends Component {
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <View style={styles.optionsContainer}>
+              { /* option buttons for change chat name, add user to chat, remove user, leave chat */ }
               <TouchableOpacity onPress={() => navigation.navigate('ChatNameScreen', { chatId: chatID })}>
                 <View style={styles.optionButton}>
                   <Text style={styles.optionButtonText}>Edit Chat Name</Text>
@@ -216,6 +230,7 @@ export default class ChatScreenApp extends Component {
               </TouchableOpacity>
             </View>
             <>
+              { /* display error if necessary */ }
               {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
             <View style={styles.listContainer}>
@@ -249,6 +264,7 @@ export default class ChatScreenApp extends Component {
             </View>
           </View>
           <View style={styles.sendContainer}>
+            { /* send message textinput and button */ }
             <TextInput
               style={styles.sendMessage}
               placeholder="Send a message..."

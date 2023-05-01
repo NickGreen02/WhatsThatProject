@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 export default class Contact extends Component {
+  // render first name and surname in a box for contact display
   render() {
     const { firstname, surname } = this.props;
     return (
@@ -16,6 +17,7 @@ export default class Contact extends Component {
   }
 }
 
+// stylesheet for the component
 const styles = StyleSheet.create({
   contactBorder: {
     borderLeftWidth: 'thin',

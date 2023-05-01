@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 export default class ChatPreview extends Component {
+  // render a chat preview box, with chat name, last message preview and chat creator name
   render() {
     const { creatorName, messagePreview, name } = this.props;
     return (
@@ -22,6 +23,7 @@ export default class ChatPreview extends Component {
   }
 }
 
+// stylesheet for the component
 const styles = StyleSheet.create({
   chatBorder: {
     borderLeftWidth: 'thin',
