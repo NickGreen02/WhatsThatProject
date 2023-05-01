@@ -12,10 +12,9 @@ export default class LoginApp extends Component {
     this.state = {
       emailstate: 'nick.green@mmu.ac.uk', passwordstate: 'Wr3xh4m!', errorstate: '', submitted: false,
     };
-    this.login = this.login.bind(this);
   }
 
-  // login function
+  // login function to validate input and send login request
   login() {
     const { emailstate, passwordstate } = this.state;
 
@@ -31,6 +30,7 @@ export default class LoginApp extends Component {
       return;
     }
 
+    // password regex validation
     const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     if (!PASSWORD_REGEX.test(passwordstate)) {
       this.setState({ errorstate: 'Invalid password.' });
@@ -38,7 +38,7 @@ export default class LoginApp extends Component {
     }
 
     const { navigation } = this.props;
-    // contact the API
+    // post request to try login, sending emailstate and passwordstate from state as body
     // eslint-disable-next-line consistent-return
     return fetch(
       'http://localhost:3333/api/1.0.0/login',
@@ -63,6 +63,7 @@ export default class LoginApp extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        // set user id and token in storage if successful
         try {
           await AsyncStorage.setItem('whatsthat_user_id', rJson.id);
           await AsyncStorage.setItem('whatsthat_session_token', rJson.token);
@@ -79,7 +80,7 @@ export default class LoginApp extends Component {
       });
   }
 
-  // render the page
+  // render email and password textinputs, login button and error display
   render() {
     const {
       emailstate,
@@ -131,6 +132,7 @@ export default class LoginApp extends Component {
               </TouchableOpacity>
             </View>
             <>
+              { /* display error if necessary */ }
               {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
           </View>
@@ -173,6 +175,7 @@ export default class LoginApp extends Component {
               </TouchableOpacity>
             </View>
             <>
+              { /* display error if necessary */ }
               {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
           </View>

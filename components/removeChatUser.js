@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import contact component to display chat members
 import Contact from './contact';
 
 export default class RemoveChatUser extends Component {
@@ -27,6 +28,7 @@ export default class RemoveChatUser extends Component {
     this.refreshMembers();
   }
 
+  // get chat members data from navigation params
   async getData() {
     const { route } = this.props;
     const { chatJSON } = route.params;
@@ -43,6 +45,7 @@ export default class RemoveChatUser extends Component {
     this.setState({ members: membersJSON });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -51,9 +54,11 @@ export default class RemoveChatUser extends Component {
     }
   };
 
+  // remove member from chat function
   async removeMember(userID) {
     const { navigation, route } = this.props;
     const { chatId } = route.params;
+    // delete request to remove user from chat using chatid and userid from navigation params
     return fetch(
       `http://localhost:3333/api/1.0.0/chat/${chatId}/user/${userID}`,
       {
@@ -87,6 +92,7 @@ export default class RemoveChatUser extends Component {
       });
   }
 
+  // render list of chat members with remove user buttons and error display
   render() {
     const { members, isLoading, errorstate } = this.state;
     if (isLoading) {
@@ -114,6 +120,7 @@ export default class RemoveChatUser extends Component {
               keyExtractor={(item) => item.user_id}
             />
             <>
+              { /* display error if necessary */ }
               {errorstate && <Text style={styles.error}>{errorstate}</Text>}
             </>
           </View>

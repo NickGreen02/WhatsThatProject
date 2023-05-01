@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native-web';
 
+// import contact component for displaying users
 import Contact from './contact';
 
 export default class SearchScreen extends Component {
@@ -38,6 +39,7 @@ export default class SearchScreen extends Component {
     this.unsubscribe();
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -46,8 +48,10 @@ export default class SearchScreen extends Component {
     }
   };
 
+  // initial search function - called on search button click
   async initialSearch() {
     const { searchString, offset } = this.state;
+    // get request for first page of search results (offset set to 0)
     return fetch(
       `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=0`,
       {
@@ -68,6 +72,7 @@ export default class SearchScreen extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        // check if the page is the last page, if so set endcheck in state to true
         if (Object.keys(rJson).length % 5 !== 0) {
           this.setState({ endCheck: true });
         }
@@ -90,8 +95,10 @@ export default class SearchScreen extends Component {
       });
   }
 
+  // search forward function - called on click of next page button
   async searchForward() {
     const { searchString, offset, endCheck } = this.state;
+    // get request for get the next 5 results by adding 5 to offset (the next page)
     return fetch(
       `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset + 5}`,
       {
@@ -113,6 +120,8 @@ export default class SearchScreen extends Component {
       .then(async (rJson) => {
         console.log(rJson);
         console.log('ENDCOUNT: ', Object.keys(rJson).length);
+
+        // check if the page is the last page, if so set endcheck in state to true
         if (Object.keys(rJson).length % 5 !== 0 || Object.keys(rJson).length === 0) {
           this.setState({ endCheck: true });
         }
@@ -127,6 +136,7 @@ export default class SearchScreen extends Component {
         console.log(offset);
         console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset + 5}`);
 
+        // add to offset in state
         this.setState({ users: newJSON, submitted: true, 'offset': offset + 5 });
       })
       .catch((error) => {
@@ -135,8 +145,10 @@ export default class SearchScreen extends Component {
       });
   }
 
+  // search backward function - called on click of previous page button
   async searchBackward() {
     const { searchString, offset } = this.state;
+    // get request for get the last 5 results by subtracting 5 from offset (the previous page)
     return fetch(
       `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset - 5}`,
       {
@@ -157,6 +169,7 @@ export default class SearchScreen extends Component {
       })
       .then(async (rJson) => {
         console.log(rJson);
+        // set endcheck to false as a previous page cant be the end
         this.setState({ endCheck: false });
         let newJSON = rJson;
         const loggedInUser = await AsyncStorage.getItem('whatsthat_user_id');
@@ -168,6 +181,7 @@ export default class SearchScreen extends Component {
         console.log(offset);
         console.log(`http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=all&limit=5&offset=${offset - 5}`);
 
+        // subtract from offset in state
         this.setState({ users: newJSON, submitted: true, 'offset': offset - 5 });
       })
       .catch((error) => {
@@ -176,7 +190,9 @@ export default class SearchScreen extends Component {
       });
   }
 
+  // add contact function
   async addContact(user, username) {
+    // post request for add contact using user id from json in state
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${user}/contact`,
       {
@@ -201,6 +217,7 @@ export default class SearchScreen extends Component {
       .catch((error) => {
         console.log(error);
         const err = String(error);
+        // if user already a contact, display as error
         if (err.includes('Already a contact')) {
           this.setState({ errorstate: `${username} is already in your contacts list!` });
         } else {
@@ -209,6 +226,7 @@ export default class SearchScreen extends Component {
       });
   }
 
+  // render search page
   render() {
     const {
       searchString,
@@ -219,6 +237,7 @@ export default class SearchScreen extends Component {
       submitted,
     } = this.state;
     if (submitted && offset === 0) {
+      // if a search has been dont and its the first page, only display a next page button
       return (
         <View style={styles.container}>
           <View style={styles.formContainer}>
@@ -264,6 +283,8 @@ export default class SearchScreen extends Component {
         </View>
       );
     } else if (submitted && offset !== 0 && endCheck === false) {
+      /* if a search has been done, it isnt the first page and it isnt the end of the results
+    then display both next page and previous page buttons */
       return (
         <View style={styles.container}>
           <View style={styles.formContainer}>
@@ -319,6 +340,8 @@ export default class SearchScreen extends Component {
         </View>
       );
     } else if (submitted && offset !== 0 && endCheck === true) {
+      /* if a search has been done, it isnt the first page and it is the end of the results
+      display only a previous page button */
       return (
         <View style={styles.container}>
           <View style={styles.formContainer}>
@@ -366,6 +389,7 @@ export default class SearchScreen extends Component {
         </View>
       );
     } else {
+      // otherwise display blank search page with a search prompt
       return (
         <View style={styles.container}>
           <View style={styles.formContainer}>
@@ -393,6 +417,7 @@ export default class SearchScreen extends Component {
   }
 }
 
+// stylesheet for the page
 const styles = StyleSheet.create({
   container: {
     flex: 1,

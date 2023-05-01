@@ -30,12 +30,15 @@ export default class EditMessage extends Component {
     this.unsubscribe();
   }
 
+  // get message text data from navigation params
   getData() {
     const { route } = this.props;
     const { initialMessageText } = route.params;
+    // eslint-disable-next-line react/no-unused-state
     this.setState({ initialMessage: initialMessageText });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -44,12 +47,14 @@ export default class EditMessage extends Component {
     }
   };
 
+  // edit message function
   async editMessage() {
     const { messagetext } = this.state;
     const { navigation, route } = this.props;
     const { chatId, messageId } = route.params;
 
-    // contact the API
+    /* patch request for update message using chat id and message id from navigation params
+    and message text from state sent as body */
     return fetch(
       `http://localhost:3333/api/1.0.0/chat/${chatId}/message/${messageId}`,
       {
@@ -62,6 +67,7 @@ export default class EditMessage extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
+          // if successful, go back a page to the chat screen
           navigation.goBack();
           return response.json();
         } if (response.status === 401) {
@@ -85,6 +91,7 @@ export default class EditMessage extends Component {
       });
   }
 
+  // render textinput and button for update message
   render() {
     const { route } = this.props;
     const { initialMessageText } = route.params;
@@ -95,7 +102,7 @@ export default class EditMessage extends Component {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.name}
-              placeholder="Change your first name"
+              placeholder="Edit this message"
               onChangeText={(value) => { this.setState({ messagetext: value }); }}
               defaultValue={initialMessageText}
             />
@@ -108,6 +115,7 @@ export default class EditMessage extends Component {
             </TouchableOpacity>
           </View>
           <>
+            { /* display error if necessary */ }
             {errorstate && <Text style={styles.error}>{errorstate}</Text>}
           </>
         </View>
@@ -116,6 +124,7 @@ export default class EditMessage extends Component {
   }
 }
 
+// stylesheet for the page
 const styles = StyleSheet.create({
   container: {
     flex: 1,

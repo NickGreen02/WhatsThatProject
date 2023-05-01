@@ -114,6 +114,7 @@ export default class ContactListApp extends Component {
       });
   }
 
+  // render contacts list with search bar+button and button to navigate to blocked users page and search all users page
   render() {
     const {
       searchString,

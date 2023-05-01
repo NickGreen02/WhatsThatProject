@@ -23,6 +23,7 @@ export default class CreateChatApp extends Component {
     this.unsubscribe();
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -31,11 +32,12 @@ export default class CreateChatApp extends Component {
     }
   };
 
+  // create new chat function
   async createChat() {
     const { chatname } = this.state;
     const { navigation } = this.props;
 
-    // contact the API
+    // create new chat request with chatname from state sent as body
     return fetch(
       'http://localhost:3333/api/1.0.0/chat',
       {
@@ -67,6 +69,7 @@ export default class CreateChatApp extends Component {
       });
   }
 
+  // render textinput and button for create chat, and display any errors to user
   render() {
     const { errorstate } = this.state;
     return (
@@ -95,6 +98,7 @@ export default class CreateChatApp extends Component {
   }
 }
 
+// stylesheet for the page
 const styles = StyleSheet.create({
   container: {
     flex: 1,
