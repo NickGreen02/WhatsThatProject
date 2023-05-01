@@ -77,11 +77,11 @@ export default class ContactListApp extends Component {
 
   // contacts search function
   async search() {
-    const { searchString, offset } = this.state;
+    const { searchString } = this.state;
     this.setState({ submitted: true });
     // search only from contacts
     return fetch(
-      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=contacts&offset=${offset}`,
+      `http://localhost:3333/api/1.0.0/search?q=${searchString}&search_in=contacts`,
       {
         method: 'GET',
         headers: { 'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token') },
