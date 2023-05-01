@@ -11,7 +11,6 @@ export default class SignupApp extends Component {
     this.state = {
       firstname: '', surname: '', emailstate: '', passwordstate: '', errorstate: '', submitted: false,
     };
-    this.signup = this.signup.bind(this);
   }
 
   // signup function
@@ -19,7 +18,6 @@ export default class SignupApp extends Component {
     const {
       emailstate, passwordstate, firstname, surname,
     } = this.state;
-    // eslint-disable-next-line react/no-unused-state
     this.setState({ submitted: true });
 
     // validation for user data
@@ -43,7 +41,7 @@ export default class SignupApp extends Component {
     }
 
     const { navigation } = this.props;
-    // contact the API
+    // post request for signup sending user data from state as body
     // eslint-disable-next-line consistent-return
     return fetch(
       'http://localhost:3333/api/1.0.0/user',
@@ -78,7 +76,7 @@ export default class SignupApp extends Component {
       });
   }
 
-  // render the page
+  // render the four textinputs, a signup button and error display
   render() {
     const {
       emailstate,
@@ -88,6 +86,7 @@ export default class SignupApp extends Component {
       errorstate,
       submitted,
     } = this.state;
+    // add selection statements as validation to prevent activityindicator upon error
     if (submitted && errorstate === '') {
       return (
         <View style={styles.container}>

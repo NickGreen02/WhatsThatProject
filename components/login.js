@@ -89,6 +89,7 @@ export default class LoginApp extends Component {
       submitted,
     } = this.state;
     const { navigation } = this.props;
+    // add selection statements as validation to prevent activityindicator upon error
     if (submitted && errorstate === '') {
       return (
         <View style={styles.container}>

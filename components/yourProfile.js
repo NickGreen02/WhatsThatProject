@@ -30,6 +30,7 @@ export default class YourProfileApp extends Component {
     this.refreshProfile();
   }
 
+  // get profile image function
   async get_profile_image() {
     const user = await AsyncStorage.getItem('whatsthat_user_id');
     return fetch(
@@ -43,7 +44,7 @@ export default class YourProfileApp extends Component {
         return response.blob();
       })
       .then((resBlob) => {
-        let data = URL.createObjectURL(resBlob);
+        let data = URL.createObjectURL(resBlob); // convert blob back to image url
         this.setState({ photo: data });
       })
       .catch((error) => {
@@ -51,6 +52,7 @@ export default class YourProfileApp extends Component {
       });
   }
 
+  // get logged in user's info using user id from local storage
   async getData() {
     const user = await AsyncStorage.getItem('whatsthat_user_id');
     return fetch(
@@ -80,6 +82,7 @@ export default class YourProfileApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -88,6 +91,7 @@ export default class YourProfileApp extends Component {
     }
   };
 
+  // render user photo, username, email and update profile button
   render() {
     const { navigation } = this.props;
     const { userData, photo } = this.state;

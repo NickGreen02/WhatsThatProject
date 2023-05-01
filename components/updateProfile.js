@@ -1,8 +1,3 @@
-// firstnameOriginal: '',
-// lastnameOriginal: '',
-// passwordOriginal: '',
-// emailOriginal: '',
-
 import React, { Component } from 'react';
 import {
   Text, View, StyleSheet, TextInput,
@@ -23,6 +18,7 @@ export default class UpdateProfile extends Component {
     };
   }
 
+  // set initial data to state from navigation params
   componentDidMount() {
     const { route, navigation } = this.props;
     const { data } = route.params;
@@ -43,6 +39,7 @@ export default class UpdateProfile extends Component {
     this.unsubscribe();
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -51,6 +48,7 @@ export default class UpdateProfile extends Component {
     }
   };
 
+  // update info function
   async updateInfo() {
     const {
       originalData,
@@ -63,6 +61,7 @@ export default class UpdateProfile extends Component {
 
     let data = {};
 
+    // check if each field has changed, if it has, change the value in the object
     if (firstnamechange !== originalData.first_name) {
       data['first_name'] = firstnamechange;
     }
@@ -85,6 +84,7 @@ export default class UpdateProfile extends Component {
     console.log(data);
 
     const user = await AsyncStorage.getItem('whatsthat_user_id');
+    // patch request sending new user data object as body
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${user}`,
       {
@@ -98,7 +98,7 @@ export default class UpdateProfile extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ChatList');
+          navigation.goBack(); // navigate back to profile page to show updated info
           return response.json();
         } if (response.status === 400) {
           throw new Error('Bad request');
@@ -123,6 +123,7 @@ export default class UpdateProfile extends Component {
       });
   }
 
+  // render the 4 textinputs and an update button
   render() {
     const {
       firstnamechange,
@@ -172,6 +173,7 @@ export default class UpdateProfile extends Component {
             </TouchableOpacity>
           </View>
           <>
+            { /* display error if necessary */ }
             {errorstate && <Text style={styles.error}>{errorstate}</Text>}
           </>
         </View>

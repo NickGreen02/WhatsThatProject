@@ -13,7 +13,7 @@ export default class UserProfileApp extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    this.checkBlocked();
+    this.checkBlocked(); // check if user is blocked
     this.unsubscribe = navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
@@ -29,6 +29,7 @@ export default class UserProfileApp extends Component {
     this.refreshProfile();
   }
 
+  // get user info
   async getData() {
     const { route } = this.props;
     const { user } = route.params;
@@ -59,6 +60,7 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  // get user profile image
   async get_profile_image() {
     const { route } = this.props;
     const { user } = route.params;
@@ -73,7 +75,7 @@ export default class UserProfileApp extends Component {
         return response.blob();
       })
       .then((resBlob) => {
-        let data = URL.createObjectURL(resBlob);
+        let data = URL.createObjectURL(resBlob); // convert blob back to image url
         this.setState({ photo: data });
       })
       .catch((error) => {
@@ -81,6 +83,7 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -89,6 +92,7 @@ export default class UserProfileApp extends Component {
     }
   };
 
+  // check if blocked by checking if blockNav is true form navigation params
   checkBlocked() {
     const { route } = this.props;
     const { blockNav } = route.params;
@@ -98,9 +102,11 @@ export default class UserProfileApp extends Component {
     }
   }
 
+  // remove contact function
   async removeContact() {
     const { route, navigation } = this.props;
     const { user } = route.params;
+    // delete request for remove contact using user id from navigation params
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${user}/contact`,
       {
@@ -110,7 +116,7 @@ export default class UserProfileApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ContactScreen');
+          navigation.navigate('ContactScreen'); // navigate to contacts page to show updated contacts list
           return response.json();
         } if (response.status === 401) {
           throw new Error('Unauthorised');
@@ -128,9 +134,11 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  // block contact function
   async blockContact() {
     const { route, navigation } = this.props;
     const { user } = route.params;
+    // post request to block user using user id from navigation params
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${user}/block`,
       {
@@ -140,7 +148,7 @@ export default class UserProfileApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ContactScreen');
+          navigation.navigate('ContactScreen'); // navigate to contacts page to show updated contacts list
           return response.json();
         } if (response.status === 400) {
           throw new Error('Self-blocking not allowed');
@@ -162,9 +170,11 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  // unblock contact function
   async unblockContact() {
     const { route, navigation } = this.props;
     const { user } = route.params;
+    // delete request to unblock user using user id from navigation params
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${user}/block`,
       {
@@ -174,7 +184,7 @@ export default class UserProfileApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ContactScreen');
+          navigation.navigate('ContactScreen'); // navigate to contacts page to show updated contacts list
           return response.json();
         } if (response.status === 400) {
           throw new Error('Self-blocking not allowed');
@@ -196,8 +206,11 @@ export default class UserProfileApp extends Component {
       });
   }
 
+  // render user photo, username, user email and buttons for add/remove contact, block/unblock
   render() {
     const { userData, blockCheck, photo } = this.state;
+    /* selection statements to check if user is blocked, if they are,
+    display a block button, if not, display an unblock button */
     if (blockCheck) {
       return (
         <View style={styles.container}>
