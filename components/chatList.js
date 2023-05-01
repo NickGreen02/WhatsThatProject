@@ -5,6 +5,7 @@ import {
 import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import chat preview component for listing each chat
 import ChatPreview from './chatPreview';
 
 export default class ChatlistApp extends Component {
@@ -26,6 +27,7 @@ export default class ChatlistApp extends Component {
     this.refreshChats = navigation.addListener('focus', () => {
       this.getData();
     });
+    // refresh the chat list every 5 seconds so that any new message shows in the last message preview
     const intervalRefresh = setInterval(() => {
       this.getData();
       console.log('chatlist interval refresh');
@@ -38,11 +40,14 @@ export default class ChatlistApp extends Component {
     const { interval } = this.state;
     this.unsubscribe();
     this.refreshChats();
+    // stop the refreshing
     clearInterval(interval);
   }
 
+  // get the list of chats with relevant info
   async getData() {
     const { route } = this.props;
+    // if chat list has changed (if logged in user has left chat) set isLoading to true
     try {
       const { updateList } = route.params;
       if (updateList === true) {
@@ -78,6 +83,7 @@ export default class ChatlistApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -86,6 +92,7 @@ export default class ChatlistApp extends Component {
     }
   };
 
+  // logout function
   async logout() {
     console.log('Logout');
     const { navigation } = this.props;
@@ -97,6 +104,7 @@ export default class ChatlistApp extends Component {
       },
     )
       .then(async (response) => {
+        // if logout successful, remove token and user id from storage
         if (response.status === 200) {
           await AsyncStorage.removeItem('whatsthat_session_token');
           await AsyncStorage.removeItem('whatsthat_user_id');
@@ -125,7 +133,7 @@ export default class ChatlistApp extends Component {
           <ActivityIndicator />
         </View>
       );
-    } else {
+    } else { // render chat list with button for navigation to each chat, user's profile page, and a logout button
       return (
         <View style={styles.container}>
           <View style={styles.formContainer}>

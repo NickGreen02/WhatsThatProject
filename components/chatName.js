@@ -24,6 +24,7 @@ export default class ChatNameApp extends Component {
     this.unsubscribe();
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -32,12 +33,13 @@ export default class ChatNameApp extends Component {
     }
   };
 
+  // edit chat name function
   async editChat() {
     const { chatname } = this.state;
     const { navigation, route } = this.props;
     const { chatId } = route.params;
 
-    // contact the API
+    // patch request for change chat name, send chatname from state as body
     return fetch(
       `http://localhost:3333/api/1.0.0/chat/${chatId}`,
       {
@@ -50,7 +52,7 @@ export default class ChatNameApp extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate('ChatList');
+          navigation.navigate('ChatList'); // if successful, navigate to chat list which shows updated chat name
           return response.json();
         } if (response.status === 400) {
           throw new Error('Bad request');
@@ -68,7 +70,6 @@ export default class ChatNameApp extends Component {
       })
       .then((rJson) => {
         console.log(rJson);
-        navigation.navigate('ChatList');
       })
       .catch((error) => {
         console.log(error);
@@ -76,6 +77,7 @@ export default class ChatNameApp extends Component {
       });
   }
 
+  // render a text input and update button for changing chat name
   render() {
     const { errorstate } = this.state;
     return (
@@ -96,6 +98,7 @@ export default class ChatNameApp extends Component {
             </TouchableOpacity>
           </View>
           <>
+            { /* display error if necessary */ }
             {errorstate && <Text style={styles.error}>{errorstate}</Text>}
           </>
         </View>
@@ -104,6 +107,7 @@ export default class ChatNameApp extends Component {
   }
 }
 
+// stylesheet for the page
 const styles = StyleSheet.create({
   container: {
     flex: 1,

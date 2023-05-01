@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+// import all components
 import LoginScreen from './components/login';
 import SignupScreen from './components/signup';
 import ChatlistScreen from './components/chatList';
@@ -20,6 +21,7 @@ import RemoveChatUser from './components/removeChatUser';
 import EditMessage from './components/editMessage';
 import AddChatUser from './components/addChatUser';
 
+// create each navigator
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const ProfileStack = createNativeStackNavigator();
@@ -28,6 +30,7 @@ const ChatStack = createNativeStackNavigator();
 
 function ContactNav() {
   return (
+    // add stack navigator for screens relating to contacts and user search
     <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="ContactScreen" component={ContactScreen} />
       <ProfileStack.Screen name="Blocked" component={BlockedScreen} options={{ headerShown: true }} />
@@ -39,6 +42,7 @@ function ContactNav() {
 
 function ChatAndYourProfileNav() {
   return (
+    // add stack navigator for screens relating to chat list and the logged in user's profile
     <YourProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <YourProfileStack.Screen name="ChatList" component={ChatlistScreen} />
       <YourProfileStack.Screen name="YourProfile" component={YourProfileScreen} options={{ headerShown: true }} />
@@ -50,6 +54,7 @@ function ChatAndYourProfileNav() {
 
 function ChatNav() {
   return (
+    // add stack navigator for screens relating to a chat
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
       <ChatStack.Screen name="ChatAndUserProfile" component={ChatAndYourProfileNav} />
       <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />

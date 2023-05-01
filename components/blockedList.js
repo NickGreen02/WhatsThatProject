@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import contact component for displaying each user
 import Contact from './contact';
 
 export default class ContactListApp extends Component {
@@ -17,7 +18,7 @@ export default class ContactListApp extends Component {
       this.checkLoggedIn();
     });
     this.refreshContacts = navigation.addListener('focus', () => {
-      this.getData();
+      this.getData(); // get data on component mount
     });
     console.log('Data displayed');
   }
@@ -27,6 +28,7 @@ export default class ContactListApp extends Component {
     this.refreshContacts();
   }
 
+  // get list of blocked users and store in state
   async getData() {
     return fetch(
       'http://localhost:3333/api/1.0.0/blocked',
@@ -55,6 +57,7 @@ export default class ContactListApp extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -66,6 +69,7 @@ export default class ContactListApp extends Component {
   render() {
     const { blocked } = this.state;
     const { navigation } = this.props;
+    // user onclick navigates to the relevant user's profile, showing their profile as a blocked user
     return (
       <View style={styles.container}>
         <View style={styles.formContainer}>

@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { ActivityIndicator, FlatList, TouchableOpacity } from 'react-native-web';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import contact component for displaying each user
 import Contact from './contact';
 
 export default class AddChatUser extends Component {
@@ -17,7 +18,7 @@ export default class AddChatUser extends Component {
       this.checkLoggedIn();
     });
     this.refreshContacts = navigation.addListener('focus', () => {
-      this.getData();
+      this.getData(); // get data on component mount
     });
     console.log('Data displayed');
   }
@@ -27,6 +28,7 @@ export default class AddChatUser extends Component {
     this.refreshContacts();
   }
 
+  // get list of contacts and store in state
   async getData() {
     this.setState({ isLoading: false });
     return fetch(
@@ -56,6 +58,7 @@ export default class AddChatUser extends Component {
       });
   }
 
+  // check if logged in, if not, send back to login screen
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const value = await AsyncStorage.getItem('whatsthat_session_token');
@@ -64,6 +67,7 @@ export default class AddChatUser extends Component {
     }
   };
 
+  // add user to chat function
   async addMember(userID, username) {
     const { navigation, route } = this.props;
     const { chatId } = route.params;
@@ -97,6 +101,7 @@ export default class AddChatUser extends Component {
       .catch((error) => {
         console.log(error);
         const err = String(error);
+        // if the user is already in the chat, set error state value to be displayed to user
         if (err.includes('Something went wrong')) {
           this.setState({ errorstate: `${username} is already a member of this chat!` });
         } else {
@@ -107,6 +112,7 @@ export default class AddChatUser extends Component {
 
   render() {
     const { contacts, isLoading, errorstate } = this.state;
+    // if page is loading, display an activity indicator
     if (isLoading) {
       return (
         <View style={styles.container}>

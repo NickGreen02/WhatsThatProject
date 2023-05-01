@@ -63,8 +63,7 @@ export default class CreateChatApp extends Component {
         navigation.navigate('Chats');
       })
       .catch((error) => {
-        // eslint-disable-next-line quote-props, react/no-unused-state
-        this.setState({ 'error': error });
+        this.setState({ errorstate: error });
       });
   }
 
