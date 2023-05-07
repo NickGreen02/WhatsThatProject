@@ -159,6 +159,10 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  saveDraft(messageText) {
+    console.log('save draft test');
+  }
+
   // delete message function
   async deleteMessage(messageID) {
     const { route } = this.props;
@@ -208,6 +212,11 @@ export default class ChatScreenApp extends Component {
           <View style={styles.formContainer}>
             <View style={styles.optionsContainer}>
               { /* option buttons for change chat name, add user to chat, remove user, leave chat */ }
+              <TouchableOpacity onPress={() => navigation.navigate('DraftsList')}>
+                <View style={styles.optionButton}>
+                  <Text style={styles.optionButtonText}>View Drafts</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('ChatNameScreen', { chatId: chatID })}>
                 <View style={styles.optionButton}>
                   <Text style={styles.optionButtonText}>Edit Chat Name</Text>
@@ -215,7 +224,7 @@ export default class ChatScreenApp extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('AddChatUser', { chatJSON: chat, chatId: chatID })}>
                 <View style={styles.optionButton}>
-                  <Text style={styles.optionButtonText}>Add User To Chat</Text>
+                  <Text style={styles.optionButtonText}>Add User</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('RemoveChatUser', { chatJSON: chat, chatId: chatID })}>
@@ -275,6 +284,9 @@ export default class ChatScreenApp extends Component {
             <TouchableOpacity style={styles.sendButton} onPress={() => this.send(messageToSend)}>
               <Text style={styles.buttonText}>Send</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.saveButton} onPress={() => this.saveDraft(messageToSend)}>
+              <Text style={styles.buttonText}>Save Draft</Text>
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -301,7 +313,8 @@ const styles = StyleSheet.create({
   optionButton: {
     backgroundColor: '#25D366',
     margin: 3,
-    width: '20vw',
+    width: '18vw',
+    height: '10vh',
   },
   optionButtonText: {
     alignText: 'center',
@@ -360,6 +373,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: 0,
+    height: '8vh',
   },
   sendMessage: {
     borderLeftWidth: 'thin',
@@ -369,17 +383,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     margin: 5,
-    width: '75vw',
+    width: '55vw',
   },
   sendButton: {
     backgroundColor: '#25D366',
     borderRadius: 20,
-    margin: 5,
+    margin: 3,
     width: '20vw',
+    justifyContent: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#25D366',
+    borderRadius: 20,
+    margin: 3,
+    width: '20vw',
+    justifyContent: 'center',
   },
   buttonText: {
     textAlign: 'center',
-    padding: 20,
+    padding: 5,
     color: 'white',
   },
 });

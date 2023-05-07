@@ -20,6 +20,7 @@ import TakePhoto from './components/takePhoto';
 import RemoveChatUser from './components/removeChatUser';
 import EditMessage from './components/editMessage';
 import AddChatUser from './components/addChatUser';
+import DraftsList from './components/draftsList';
 
 // create each navigator
 const Stack = createNativeStackNavigator();
@@ -58,6 +59,7 @@ function ChatNav() {
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
       <ChatStack.Screen name="ChatAndUserProfile" component={ChatAndYourProfileNav} />
       <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
+      <ChatStack.Screen name="DraftsList" component={DraftsList} options={{ headerShown: true }} />
       <ChatStack.Screen name="ChatNameScreen" component={ChatNameScreen} options={{ headerShown: true }} />
       <ChatStack.Screen name="AddChatUser" component={AddChatUser} options={{ headerShown: true }} />
       <ChatStack.Screen name="RemoveChatUser" component={RemoveChatUser} options={{ headerShown: true }} />
