@@ -16,6 +16,7 @@ export default class DraftsList extends Component {
     this.unsubscribe = navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
+    // set drafts to state from local storage
     AsyncStorage.getItem('whatsthat_draft_messages')
       .then((response) => { this.setState({ drafts: JSON.parse(response) }); });
     console.log('Data displayed');
@@ -34,6 +35,7 @@ export default class DraftsList extends Component {
     }
   };
 
+  // send draft message function
   async sendDraft(messageText, chatID) {
     const { navigation } = this.props;
     // send message request with message text from draft list sent as body
@@ -52,6 +54,7 @@ export default class DraftsList extends Component {
     )
       .then((rJson) => {
         console.log(rJson);
+        // navigate back to chatscreen to show message has been sent
         navigation.goBack();
       })
       .catch((error) => {

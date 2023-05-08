@@ -32,6 +32,7 @@ export default class ChatScreenApp extends Component {
       console.log('chatscreen interval refresh');
     }, 5000);
     this.setState({ interval: intervalRefresh });
+    // check if there's existing drafts in local storage, if yes, set state to those
     AsyncStorage.getItem('whatsthat_draft_messages')
       .then((response) => {
         if (!(response === '' || response === null)) {
@@ -166,18 +167,24 @@ export default class ChatScreenApp extends Component {
       });
   }
 
+  // save draft to state function
   saveDraft(messageText) {
     const { draftMessages } = this.state;
     let arr = draftMessages;
+    // add the new draft message as an object in the array in state
     arr.push({ draft: messageText });
     this.setState({ draftMessages: arr, messageToSend: '', errorstate: 'Message saved as draft' });
+    // call function that saves the state drafts in local storage
     this.saveDraftsToStorage();
   }
 
+  // save drafts to local storage function
   saveDraftsToStorage() {
     const { draftMessages } = this.state;
     const drafts = JSON.stringify(draftMessages);
+    // save the drafts array to local storage
     AsyncStorage.setItem('whatsthat_draft_messages', drafts);
+    // refresh page upon save draft
     this.setState({ isLoading: true, errorstate: '' });
   }
 
