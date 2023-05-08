@@ -170,7 +170,7 @@ export default class ChatScreenApp extends Component {
     const { draftMessages } = this.state;
     let arr = draftMessages;
     arr.push({ draft: messageText });
-    this.setState({ draftMessages: arr });
+    this.setState({ draftMessages: arr, messageToSend: '', errorstate: 'Message saved as draft' });
     this.saveDraftsToStorage();
   }
 
@@ -178,6 +178,7 @@ export default class ChatScreenApp extends Component {
     const { draftMessages } = this.state;
     const drafts = JSON.stringify(draftMessages);
     AsyncStorage.setItem('whatsthat_draft_messages', drafts);
+    this.setState({ isLoading: true, errorstate: '' });
   }
 
   // delete message function
@@ -420,5 +421,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 5,
     color: 'white',
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    justifyContent: 'center',
+    paddingTop: 10,
   },
 });

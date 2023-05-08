@@ -35,8 +35,30 @@ export default class DraftsList extends Component {
     }
   };
 
-  sendDraft() {
-    console.log('send draft test');
+  async sendDraft(messageText, chatID) {
+    const { navigation } = this.props;
+    // send message request with message text from draft list sent as body
+    return fetch(
+      `http://localhost:3333/api/1.0.0/chat/${chatID}/message`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Authorization': await AsyncStorage.getItem('whatsthat_session_token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: messageText,
+        }),
+      },
+    )
+      .then((rJson) => {
+        console.log(rJson);
+        navigation.goBack();
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({ errorstate: error });
+      });
   }
 
   // render drafts list with send draft buttons
