@@ -11,6 +11,7 @@ export default class ChatScreenApp extends Component {
     this.state = {
       chat: {},
       messageToSend: '',
+      draftMessages: [],
       isLoading: true,
       interval: null,
       errorstate: '',
@@ -160,7 +161,17 @@ export default class ChatScreenApp extends Component {
   }
 
   saveDraft(messageText) {
-    console.log('save draft test');
+    const { draftMessages } = this.state;
+    let arr = draftMessages;
+    arr.push({ draft: messageText });
+    this.setState({ draftMessages: arr });
+    this.saveDraftsToStorage();
+  }
+
+  saveDraftsToStorage() {
+    const { draftMessages } = this.state;
+    const drafts = JSON.stringify(draftMessages);
+    AsyncStorage.setItem('whatsthat_draft_messages', drafts);
   }
 
   // delete message function
@@ -212,7 +223,7 @@ export default class ChatScreenApp extends Component {
           <View style={styles.formContainer}>
             <View style={styles.optionsContainer}>
               { /* option buttons for change chat name, add user to chat, remove user, leave chat */ }
-              <TouchableOpacity onPress={() => navigation.navigate('DraftsList')}>
+              <TouchableOpacity onPress={() => navigation.navigate('DraftsList', { chatId: chatID })}>
                 <View style={styles.optionButton}>
                   <Text style={styles.optionButtonText}>View Drafts</Text>
                 </View>

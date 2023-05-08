@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class DraftsList extends Component {
   constructor(props) {
     super(props);
-    this.state = { drafts: '', isLoading: false, errorstate: '' };
+    this.state = { drafts: [], isLoading: false, errorstate: '' };
   }
 
   componentDidMount() {
@@ -16,6 +16,9 @@ export default class DraftsList extends Component {
     this.unsubscribe = navigation.addListener('focus', () => {
       this.checkLoggedIn();
     });
+    AsyncStorage.getItem('whatsthat_draft_messages')
+      .then((response) => { this.setState({ drafts: JSON.parse(response) }); });
+    console.log(this.state.drafts);
     console.log('Data displayed');
   }
 
@@ -32,54 +35,46 @@ export default class DraftsList extends Component {
     }
   };
 
-  manageData(drafts) {
-    // let s = JSON.parse(drafts);
-    console.log(drafts);
-
-    // const newObj = [];
-
-    // drafts.drafts.forEach((value) => newObj.push({ 'draft': value }));
-    // console.log(newObj);
+  sendDraft() {
+    console.log('send draft test');
   }
 
   // render drafts list with send draft buttons
   render() {
-    return (
-      <Text>Drafts list testing</Text>
-    );
-  //   const { drafts, isLoading, errorstate } = this.state;
-  //   if (isLoading) {
-  //     return (
-  //       <View style={styles.container}>
-  //         <ActivityIndicator />
-  //       </View>
-  //     );
-  //   } else {
-  //     return (
-  //       <View style={styles.container}>
-  //         <View style={styles.formContainer}>
-  //           <>
-  //             {errorstate && <Text style={styles.error}>{errorstate}</Text>}
-  //           </>
-  //           <FlatList
-  //             data={drafts}
-  //             renderItem={({ item }) => (
-  //               <View>
-  //                 <Text style={styles.draftMessage}>{item}</Text>
-  //                 <TouchableOpacity onPress={() => this.addMember(item.user_id, `${item.first_name} ${item.last_name}`)}>
-  //                   <View style={styles.addMemberButton}>
-  //                     <Text style={styles.buttonText}>Add User</Text>
-  //                   </View>
-  //                 </TouchableOpacity>
-  //               </View>
-  //             )}
-  //             keyExtractor={(item) => item.user_id}
-  //           />
-  //         </View>
-  //       </View>
-  //     );
-  //   }
-  // }
+    const { drafts, isLoading, errorstate } = this.state;
+    const { route } = this.props;
+    const { chatId } = route.params;
+    if (isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <>
+              {errorstate && <Text style={styles.error}>{errorstate}</Text>}
+            </>
+            <FlatList
+              data={drafts}
+              renderItem={({ item }) => (
+                <View>
+                  <Text style={styles.draftMessageText}>{item.draft}</Text>
+                  <TouchableOpacity onPress={() => this.sendDraft(item.draft, chatId)}>
+                    <View style={styles.sendDraftButton}>
+                      <Text style={styles.buttonText}>Send Draft</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item) => item.user_id}
+            />
+          </View>
+        </View>
+      );
+    }
   }
 }
 
@@ -93,6 +88,20 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
+  },
+  draftMessageText: {
+    fontSize: 15,
+  },
+  sendDraftButton: {
+    justifyContent: 'center',
+    backgroundColor: '#25D366',
+    marginTop: 2,
+    marginBottom: 8,
+    margin: 5,
+  },
+  buttonText: {
+    padding: 10,
+    color: 'white',
   },
   error: {
     color: 'red',
