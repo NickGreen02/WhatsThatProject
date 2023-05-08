@@ -225,10 +225,6 @@ export default class UserProfileApp extends Component {
               {userData.last_name}
             </Text>
             <Text style={styles.email}>{userData.email}</Text>
-            <Text style={styles.email}>
-              {'User ID: '}
-              {userData.user_id}
-            </Text>
             <TouchableOpacity onPress={() => this.removeContact()}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Remove Contact</Text>
@@ -256,10 +252,6 @@ export default class UserProfileApp extends Component {
               {userData.last_name}
             </Text>
             <Text style={styles.email}>{userData.email}</Text>
-            <Text style={styles.email}>
-              {'User ID: '}
-              {userData.user_id}
-            </Text>
             <TouchableOpacity onPress={() => this.removeContact()}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Remove Contact</Text>
