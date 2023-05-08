@@ -35,7 +35,7 @@ export default class ChatScreenApp extends Component {
     AsyncStorage.getItem('whatsthat_draft_messages')
       .then((response) => {
         if (!(response === '' || response === null)) {
-          this.setState({draftMessages: JSON.parse(response) });
+          this.setState({ draftMessages: JSON.parse(response) });
         }
       });
     console.log('Data displayed');

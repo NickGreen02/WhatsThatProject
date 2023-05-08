@@ -18,7 +18,6 @@ export default class DraftsList extends Component {
     });
     AsyncStorage.getItem('whatsthat_draft_messages')
       .then((response) => { this.setState({ drafts: JSON.parse(response) }); });
-    console.log(this.state.drafts);
     console.log('Data displayed');
   }
 
