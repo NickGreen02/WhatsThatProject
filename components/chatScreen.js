@@ -32,6 +32,12 @@ export default class ChatScreenApp extends Component {
       console.log('chatscreen interval refresh');
     }, 5000);
     this.setState({ interval: intervalRefresh });
+    AsyncStorage.getItem('whatsthat_draft_messages')
+      .then((response) => {
+        if (!(response === '' || response === null)) {
+          this.setState({draftMessages: JSON.parse(response) });
+        }
+      });
     console.log('Data displayed');
   }
 

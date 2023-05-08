@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   },
   draftMessageText: {
     fontSize: 15,
+    margin: 5,
   },
   sendDraftButton: {
     justifyContent: 'center',
