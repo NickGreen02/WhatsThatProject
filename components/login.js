@@ -10,7 +10,7 @@ export default class LoginApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      emailstate: 'nick.green@mmu.ac.uk', passwordstate: 'Wr3xh4m!', errorstate: '', submitted: false,
+      emailstate: '', passwordstate: '', errorstate: '', submitted: false,
     };
   }
 
