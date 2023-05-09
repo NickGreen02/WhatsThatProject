@@ -53,7 +53,7 @@ export default class ChatScreenApp extends Component {
   // get the chat data
   async getData() {
     // get which chat id to request data of, from navigation params
-    const { route } = this.props;
+    const { route, navigation } = this.props;
     const { chatID } = route.params;
     return fetch(
       `http://localhost:3333/api/1.0.0/chat/${chatID}`,
@@ -68,6 +68,7 @@ export default class ChatScreenApp extends Component {
         } if (response.status === 401) {
           throw new Error('Unauthorised access');
         } if (response.status === 403) {
+          navigation.goBack();
           throw new Error('Forbidden by server');
         } if (response.status === 404) {
           throw new Error('Not found');
