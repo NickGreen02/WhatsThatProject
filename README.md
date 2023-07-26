@@ -1,6 +1,6 @@
 # WhatsThatProject
 
-## GitHub Repository (Private)
+## GitHub Repository
 https://github.com/NickGreen02/WhatsThatProject
 
 ## Code style guide
