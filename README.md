@@ -1,4 +1,5 @@
 # WhatsThatProject
+A WhatsApp clone made using React Native.
 
 ## GitHub Repository
 https://github.com/NickGreen02/WhatsThatProject
